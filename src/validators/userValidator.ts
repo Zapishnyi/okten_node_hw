@@ -43,9 +43,12 @@ export const validation = (
     },
     {
       password: [
+        typeof obj.password === "string"
+          ? true
+          : new ApiError("User Name must be a string", 400),
         obj.password.length >= 6
           ? true
-          : new ApiError("Name must be at least 6 symbol long", 400),
+          : new ApiError("Password must be at least 6 symbol long", 400),
       ],
     },
     {
@@ -75,7 +78,7 @@ export const validation = (
       gender: [
         typeof obj.gender === "string"
           ? true
-          : new ApiError("gender must be male or female", 400),
+          : new ApiError("gender must be string", 400),
         obj.gender === "male" || obj.gender === "female"
           ? true
           : new ApiError("gender must be male or female", 400),
