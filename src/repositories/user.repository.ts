@@ -1,19 +1,37 @@
-import fsSync from "node:fs";
-import fsAsync from "node:fs/promises";
+import IUser from "../interfaces/IUser";
+import { UserModel } from "../models/user.model";
 
-import { dbFile } from "../constants/dbPath";
-import IUser from "../models/IUser";
-
-class DBService {
-  public async read(): Promise<IUser[]> {
-    return fsSync.existsSync(dbFile)
-      ? JSON.parse(await fsAsync.readFile(dbFile, "utf-8"))
-      : [];
+class UserRepository {
+  public async findAll(): Promise<IUser[]> {
+    return await UserModel.find();
   }
 
-  public async write(fileContent: IUser[]): Promise<void> {
-    await fsAsync.writeFile(dbFile, JSON.stringify(fileContent));
+  public async createOne(dto: IUser): Promise<IUser> {
+    return await UserModel.create(dto);
+  }
+
+  public async findOne(userId: string): Promise<IUser | null> {
+    return await UserModel.findById(userId);
+  }
+
+  public async updateOne(userId: string, dto: IUser): Promise<IUser | null> {
+    return await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { ...dto },
+      { returnDocument: "after" },
+    );
+  }
+
+  public async replaceOne(userId: string, dto: IUser): Promise<IUser | null> {
+    return await UserModel.findOneAndReplace(
+      { _id: userId },
+      { ...dto },
+      { returnDocument: "after" },
+    );
+  }
+
+  public async deleteOne(userId: string): Promise<null> {
+    return await UserModel.findOneAndDelete({ _id: userId });
   }
 }
-
-export const { read, write } = new DBService();
+export const userRepository = new UserRepository();

@@ -1,7 +1,8 @@
 import express, { Express, NextFunction, Request, Response } from "express";
+import * as mongoose from "mongoose";
 
-import { port } from "./constants/port";
-import { users } from "./constants/urls";
+import { config } from "./configs/config";
+import { routs } from "./constants/routs";
 import { ApiError } from "./errors/api.error";
 import { userRouter } from "./routers/user.router";
 
@@ -10,12 +11,12 @@ const app: Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(users.base, userRouter);
+app.use(routs.users, userRouter);
 
 app.use(
   "*",
   (err: ApiError, req: Request, res: Response, next: NextFunction) => {
-    res.status(err.status).json(err.message);
+    res.status(err.status || 500).json(err.message);
   },
 );
 
@@ -24,6 +25,7 @@ process.on("uncaughtException", (err: Error) => {
   process.exit(1);
 });
 
-app.listen(port, () => {
-  console.log(`server started at port ${port} `);
+app.listen(config.APP_PORT, config.APP_HOST, async () => {
+  await mongoose.connect(config.MONGO_URI);
+  console.log(`server started at port ${config.APP_PORT} `);
 });

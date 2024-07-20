@@ -1,32 +1,51 @@
 import { Router } from "express";
 
-import { users } from "../constants/urls";
+import { routs } from "../constants/routs";
 import { userController } from "../controllers/user.controller";
+import { validation } from "../middlewares/Validation";
 
 const router = Router();
 
 // Get All Users
 
-router.get(users.all, userController.findAll);
+router.get(routs.root, userController.findAll);
 
 // Get one user by ID
 
-router.get(users.byId, userController.findOne);
+router.get(
+  routs.root + ":" + routs.userId,
+  validation.id(routs.userId),
+  userController.findOne,
+);
 
 //  Add one User
 
-router.post(users.all, userController.addOne);
+router.post(routs.root, validation.userStrict(true), userController.addOne);
 
 // Edit one user by ID
 
-router.patch(users.byId, userController.updateOne);
+router.patch(
+  routs.root + ":" + routs.userId,
+  validation.id(routs.userId),
+  validation.userStrict(false),
+  userController.updateOne,
+);
 
 // Replace one user by ID
 
-router.put(users.byId, userController.replaceOne);
+router.put(
+  routs.root + ":" + routs.userId,
+  validation.id(routs.userId),
+  validation.userStrict(true),
+  userController.replaceOne,
+);
 
 // Delete one user by ID
 
-router.delete(users.byId, userController.deleteOne);
+router.delete(
+  routs.root + ":" + routs.userId,
+  validation.id(routs.userId),
+  userController.deleteOne,
+);
 
 export const userRouter = router;

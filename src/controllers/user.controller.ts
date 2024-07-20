@@ -21,7 +21,7 @@ class UserController {
 
   public async addOne(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(201).json(await userServices.addOne(req.body));
+      res.status(201).json(await userServices.createOne(req.body));
     } catch (err) {
       next(err);
     }
@@ -36,7 +36,7 @@ class UserController {
       next(err);
     }
   }
-
+  //
   public async replaceOne(req: Request, res: Response, next: NextFunction) {
     try {
       res
@@ -46,13 +46,13 @@ class UserController {
       next(err);
     }
   }
-
+  //
   public async deleteOne(req: Request, res: Response, next: NextFunction) {
     try {
       await userServices.deleteOne(req.params.userId);
-      res.status(200).json({
-        message: `User with ID ${req.params.userId} successful deleted`,
-      });
+      res
+        .status(200)
+        .json(`User with ID ${req.params.userId} successful deleted`);
     } catch (err) {
       next(err);
     }
