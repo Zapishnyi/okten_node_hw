@@ -22,7 +22,7 @@ class UserServices {
     return await userRepository.replaceOne(userId, dto);
   }
 
-  public async deleteOne(userId: string): Promise<null> {
+  public async deleteOne(userId: string): Promise<IUser | null> {
     return await userRepository.deleteOne(userId);
   }
 }

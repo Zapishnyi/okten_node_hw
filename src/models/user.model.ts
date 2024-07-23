@@ -10,7 +10,7 @@ const userSchema = new Schema(
   {
     name: { type: String, required: true },
     userName: { type: String, require: true, unique: true },
-    password: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     age: { type: Number, required: true },
     email: { type: String, require: true, unique: true },
     phone: { type: String, require: false },

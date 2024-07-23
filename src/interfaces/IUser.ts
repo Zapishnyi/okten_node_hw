@@ -14,5 +14,4 @@ export default interface IUser {
   isVerified: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  // eslint-disable-next-line prettier/prettier,semi
-};
+}

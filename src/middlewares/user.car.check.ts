@@ -2,10 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "joi";
 import { isObjectIdOrHexString } from "mongoose";
 
+import { schemaModel } from "../enums/schemaModel.enum";
 import { ApiError } from "../errors/api.error";
-import { schema } from "../validators/UserValidator";
+import { schema } from "../validators/car.user.validator";
 
-class Validation {
+class UserCarCheck {
   public id(id: string) {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -19,18 +20,20 @@ class Validation {
     };
   }
 
-  public userStrict(strict: boolean) {
-    const validationSchema = strict ? schema.userStrict : schema.userNotStrict;
+  public strict(strict: boolean, model: schemaModel) {
+    const validationSchema = strict
+      ? schema[`${model}Strict`]
+      : schema[`${model}NotStrict`];
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         await validationSchema.validateAsync(req.body);
         next();
       } catch (err) {
         const error = err as ValidationError;
-        next(new ApiError(error.details[0].message, 400));
+        next(new ApiError(error.message, 400));
       }
     };
   }
 }
 
-export const validation = new Validation();
+export const validation = new UserCarCheck();

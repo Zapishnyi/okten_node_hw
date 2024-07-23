@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
-import { userServices } from "../services/user.service";
+import { carServices } from "../services/car.service";
 
-class UserController {
+class CarController {
   public async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await userServices.findAll());
+      res.status(200).json(await carServices.findAll());
     } catch (err) {
       next(err);
     }
@@ -13,7 +13,7 @@ class UserController {
 
   public async findOne(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await userServices.findOne(req.params.id));
+      res.status(200).json(await carServices.findOne(req.params.id));
     } catch (err) {
       next(err);
     }
@@ -21,7 +21,7 @@ class UserController {
 
   public async addOne(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(201).json(await userServices.createOne(req.body));
+      res.status(201).json(await carServices.createOne(req.body));
     } catch (err) {
       next(err);
     }
@@ -31,7 +31,7 @@ class UserController {
     try {
       res
         .status(200)
-        .json(await userServices.updateOne(req.params.id, req.body));
+        .json(await carServices.updateOne(req.params.id, req.body));
     } catch (err) {
       next(err);
     }
@@ -41,7 +41,7 @@ class UserController {
     try {
       res
         .status(200)
-        .json(await userServices.replaceOne(req.params.id, req.body));
+        .json(await carServices.replaceOne(req.params.id, req.body));
     } catch (err) {
       next(err);
     }
@@ -49,7 +49,7 @@ class UserController {
   //
   public async deleteOne(req: Request, res: Response, next: NextFunction) {
     try {
-      await userServices.deleteOne(req.params.id);
+      await carServices.deleteOne(req.params.id);
       res.status(200).json(`User with ID ${req.params.id} successful deleted`);
     } catch (err) {
       next(err);
@@ -57,4 +57,4 @@ class UserController {
   }
 }
 
-export const userController = new UserController();
+export const carController = new CarController();

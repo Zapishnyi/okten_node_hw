@@ -4,6 +4,7 @@ import * as mongoose from "mongoose";
 import { config } from "./configs/config";
 import { routs } from "./constants/routs";
 import { ApiError } from "./errors/api.error";
+import { carRouter } from "./routers/car.router";
 import { userRouter } from "./routers/user.router";
 
 const app: Express = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(routs.users, userRouter);
+app.use(routs.cars, carRouter);
 
 app.use(
   "*",

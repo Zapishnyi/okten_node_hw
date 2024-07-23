@@ -20,7 +20,7 @@ module.exports = {
   rules: {
     // indent: ["error", 2, { SwitchCase: 1 }],
     quotes: ["error", "double"],
-    semi: ["error", "always"],
+    // semi: ["error", "always"],
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",

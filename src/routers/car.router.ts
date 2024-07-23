@@ -1,56 +1,56 @@
 import { Router } from "express";
 
 import { routs } from "../constants/routs";
-import { userController } from "../controllers/user.controller";
+import { carController } from "../controllers/car.controller";
 import { schemaModel } from "../enums/schemaModel.enum";
 import { validation } from "../middlewares/user.car.check";
 
 const router = Router();
 
-// Get All Users
+// Get All Car
 
-router.get(routs.root, userController.findAll);
+router.get(routs.root, carController.findAll);
 
-// Get one user by ID
+// Get one Car by ID
 
 router.get(
   routs.root + ":" + routs.id,
   validation.id(routs.id),
-  userController.findOne,
+  carController.findOne,
 );
 
-//  Add one User
+//  Add one Car
 
 router.post(
   routs.root,
-  validation.strict(true, schemaModel.User),
-  userController.addOne,
+  validation.strict(true, schemaModel.Car),
+  carController.addOne,
 );
 
-// Edit one user by ID
+// Edit one Car by ID
 
 router.patch(
   routs.root + ":" + routs.id,
   validation.id(routs.id),
-  validation.strict(false, schemaModel.User),
-  userController.updateOne,
+  validation.strict(false, schemaModel.Car),
+  carController.updateOne,
 );
 
-// Replace one user by ID
+// Replace one Car by ID
 
 router.put(
   routs.root + ":" + routs.id,
   validation.id(routs.id),
-  validation.strict(true, schemaModel.User),
-  userController.replaceOne,
+  validation.strict(true, schemaModel.Car),
+  carController.replaceOne,
 );
 
-// Delete one user by ID
+// Delete one Car by ID
 
 router.delete(
   routs.root + ":" + routs.id,
   validation.id(routs.id),
-  userController.deleteOne,
+  carController.deleteOne,
 );
 
-export const userRouter = router;
+export const carRouter = router;

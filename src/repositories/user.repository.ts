@@ -1,3 +1,4 @@
+import { noIdFoundCheck } from "../errors/noIdFound";
 import IUser from "../interfaces/IUser";
 import { UserModel } from "../models/user.model";
 
@@ -10,28 +11,36 @@ class UserRepository {
     return await UserModel.create(dto);
   }
 
-  public async findOne(userId: string): Promise<IUser | null> {
-    return await UserModel.findById(userId);
+  public async findOne(id: string): Promise<IUser | null> {
+    const result = await UserModel.findById(id);
+    noIdFoundCheck(id, result);
+    return result;
   }
 
-  public async updateOne(userId: string, dto: IUser): Promise<IUser | null> {
-    return await UserModel.findOneAndUpdate(
-      { _id: userId },
+  public async updateOne(id: string, dto: IUser): Promise<IUser | null> {
+    const result = await UserModel.findOneAndUpdate(
+      { _id: id },
       { ...dto },
       { returnDocument: "after" },
     );
+    noIdFoundCheck(id, result);
+    return result;
   }
 
-  public async replaceOne(userId: string, dto: IUser): Promise<IUser | null> {
-    return await UserModel.findOneAndReplace(
-      { _id: userId },
+  public async replaceOne(id: string, dto: IUser): Promise<IUser | null> {
+    const result = await UserModel.findOneAndReplace(
+      { _id: id },
       { ...dto },
       { returnDocument: "after" },
     );
+    noIdFoundCheck(id, result);
+    return result;
   }
 
-  public async deleteOne(userId: string): Promise<null> {
-    return await UserModel.findOneAndDelete({ _id: userId });
+  public async deleteOne(id: string): Promise<IUser | null> {
+    const result = await UserModel.findOneAndDelete({ _id: id });
+    noIdFoundCheck(id, result);
+    return result;
   }
 }
 export const userRepository = new UserRepository();
