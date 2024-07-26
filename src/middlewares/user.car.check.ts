@@ -4,14 +4,14 @@ import { isObjectIdOrHexString } from "mongoose";
 
 import { schemaModel } from "../enums/schemaModel.enum";
 import { ApiError } from "../errors/api.error";
-import { schema } from "../validators/car.user.validator";
+import { schema } from "../validators/validator";
 
 class UserCarCheck {
-  public id(id: string) {
-    return (req: Request, res: Response, next: NextFunction) => {
+  public id() {
+    return (req: Request, res: Response, next: NextFunction): void => {
       try {
-        if (!isObjectIdOrHexString(req.params[id])) {
-          throw new ApiError("Invalid Id", 400);
+        if (!isObjectIdOrHexString(req.params.id)) {
+          throw new ApiError("Invalid ID", 400);
         }
         next();
       } catch (err) {
@@ -19,8 +19,7 @@ class UserCarCheck {
       }
     };
   }
-
-  public strict(strict: boolean, model: schemaModel) {
+  public userOrCar(strict: boolean, model: schemaModel) {
     const validationSchema = strict
       ? schema[`${model}Strict`]
       : schema[`${model}NotStrict`];
@@ -31,6 +30,17 @@ class UserCarCheck {
       } catch (err) {
         const error = err as ValidationError;
         next(new ApiError(error.message, 400));
+      }
+    };
+  }
+  public userRoleCheck() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        if (req.params.id !== req.res?.locals.id) {
+          throw new ApiError("Forbidden", 403);
+        }
+      } catch (err) {
+        next(err);
       }
     };
   }

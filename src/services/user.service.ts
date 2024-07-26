@@ -9,6 +9,9 @@ class UserServices {
   public async findOne(userId: string): Promise<IUser | null> {
     return await userRepository.findOne(userId);
   }
+  public async findOneByUserName(userName: string): Promise<IUser | null> {
+    return await userRepository.findByUserName(userName);
+  }
 
   public async createOne(newUser: IUser): Promise<IUser> {
     return await userRepository.createOne(newUser);

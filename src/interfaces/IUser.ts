@@ -1,17 +1,15 @@
-import { GenderEnum } from "../enums/gender.enum";
-import { RoleEnum } from "../enums/role.enums";
+import { Schema } from "mongoose";
 
-export default interface IUser {
-  _id?: string;
-  name: string;
+import { RoleEnum } from "../enums/role.enums";
+import IUserNonSensitive from "./IUserNonSensitive";
+
+export default interface IUser extends IUserNonSensitive {
+  _id: Schema.Types.ObjectId;
   userName: string;
   password: string;
-  age: number;
   email: string;
-  phone?: string;
-  gender: GenderEnum;
-  role: RoleEnum;
-  isVerified: boolean;
+  role?: RoleEnum;
+  isVerified?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

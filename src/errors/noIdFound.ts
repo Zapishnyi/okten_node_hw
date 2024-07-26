@@ -1,9 +1,12 @@
 import ICar from "../interfaces/ICar";
-import IUser from "../interfaces/IUser";
+import IUserFull from "../interfaces/IUserFull";
 import { ApiError } from "./api.error";
 
-export const noIdFoundCheck = (id: string, result: IUser | ICar | null) => {
+export const noIdFoundCheck = (
+  payload: string,
+  result: IUserFull | ICar | null,
+) => {
   if (!result) {
-    throw new ApiError(`User with ID ${id} is not found`, 404);
+    throw new ApiError(`User: ${payload} is not found`, 404);
   }
 };

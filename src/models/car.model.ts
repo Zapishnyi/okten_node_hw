@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import ICar from "../interfaces/ICar";
+import { UserModel } from "./user.model";
 
 const { Schema } = mongoose;
 
@@ -11,6 +12,7 @@ const carsSchema = new Schema(
     price: { type: String, required: true },
     img: { type: String, required: true },
     secondHand: { type: Boolean, required: true },
+    ownerId: { type: Schema.Types.ObjectId, required: true, ref: UserModel },
   },
   {
     timestamps: true,

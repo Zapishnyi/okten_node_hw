@@ -8,19 +8,27 @@ class UserRepository {
   }
 
   public async createOne(dto: IUser): Promise<IUser> {
+    await UserModel.syncIndexes();
     return await UserModel.create(dto);
   }
 
   public async findOne(id: string): Promise<IUser | null> {
-    const result = await UserModel.findById(id);
+    const result: IUser | null = await UserModel.findById(id);
     noIdFoundCheck(id, result);
+    return result;
+  }
+  public async findByUserName(userName: string): Promise<IUser | null> {
+    const result: IUser | null = await UserModel.findOne({ userName });
+    noIdFoundCheck(userName, result);
     return result;
   }
 
   public async updateOne(id: string, dto: IUser): Promise<IUser | null> {
-    const result = await UserModel.findOneAndUpdate(
+    const { userName, password, email, ...newDto } = dto;
+    console.log(userName, password, email);
+    const result: IUser | null = await UserModel.findOneAndUpdate(
       { _id: id },
-      { ...dto },
+      { ...newDto },
       { returnDocument: "after" },
     );
     noIdFoundCheck(id, result);
@@ -28,7 +36,7 @@ class UserRepository {
   }
 
   public async replaceOne(id: string, dto: IUser): Promise<IUser | null> {
-    const result = await UserModel.findOneAndReplace(
+    const result: IUser | null = await UserModel.findOneAndReplace(
       { _id: id },
       { ...dto },
       { returnDocument: "after" },
@@ -38,7 +46,9 @@ class UserRepository {
   }
 
   public async deleteOne(id: string): Promise<IUser | null> {
-    const result = await UserModel.findOneAndDelete({ _id: id });
+    const result: IUser | null = await UserModel.findOneAndDelete({
+      _id: id,
+    });
     noIdFoundCheck(id, result);
     return result;
   }

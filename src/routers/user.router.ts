@@ -1,55 +1,53 @@
 import { Router } from "express";
 
-import { routs } from "../constants/routs";
 import { userController } from "../controllers/user.controller";
 import { schemaModel } from "../enums/schemaModel.enum";
+import { auth } from "../middlewares/auth.check";
 import { validation } from "../middlewares/user.car.check";
 
 const router = Router();
 
 // Get All Users
 
-router.get(routs.root, userController.findAll);
+// router.get("/", userController.findAll);
 
 // Get one user by ID
 
 router.get(
-  routs.root + ":" + routs.id,
-  validation.id(routs.id),
+  "/:id",
+  auth.accessTokenCheck(),
+  validation.id(),
+  validation.userRoleCheck(),
   userController.findOne,
-);
-
-//  Add one User
-
-router.post(
-  routs.root,
-  validation.strict(true, schemaModel.User),
-  userController.addOne,
 );
 
 // Edit one user by ID
 
 router.patch(
-  routs.root + ":" + routs.id,
-  validation.id(routs.id),
-  validation.strict(false, schemaModel.User),
+  "/:id",
+  auth.accessTokenCheck(),
+  validation.id(),
+  validation.userRoleCheck(),
+  validation.userOrCar(false, schemaModel.User),
   userController.updateOne,
 );
 
 // Replace one user by ID
 
-router.put(
-  routs.root + ":" + routs.id,
-  validation.id(routs.id),
-  validation.strict(true, schemaModel.User),
-  userController.replaceOne,
-);
+// router.put(
+//   "/:id",
+//   validation.id(),
+//   validation.userOrCar(true, schemaModel.User),
+//   userController.replaceOne,
+// );
 
 // Delete one user by ID
 
 router.delete(
-  routs.root + ":" + routs.id,
-  validation.id(routs.id),
+  "/:id",
+  auth.accessTokenCheck(),
+  validation.id(),
+  validation.userRoleCheck(),
   userController.deleteOne,
 );
 

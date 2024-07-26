@@ -36,15 +36,20 @@ class Schema {
   public static img = Joi.string().uri().trim();
   public static secondHand = Joi.boolean();
 
-  public userStrict: Joi.ObjectSchema<IUser> = Joi.object({
-    name: Schema.name.required(),
+  public auth: Joi.ObjectSchema<IUser> = Joi.object({
     userName: Schema.userName.required(),
     password: Schema.password.required(),
-    age: Schema.age.required(),
+  });
+
+  public userStrict: Joi.ObjectSchema<IUser> = Joi.object({
+    name: Schema.name,
+    userName: Schema.userName.required(),
+    password: Schema.password.required(),
+    age: Schema.age,
     email: Schema.email.required(),
     phone: Schema.phone,
-    gender: Schema.gender.required(),
-    role: Schema.role.required(),
+    gender: Schema.gender,
+    role: Schema.role,
   });
   public userNotStrict: Joi.ObjectSchema<IUser> = Joi.object({
     name: Schema.name,
