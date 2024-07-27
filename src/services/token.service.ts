@@ -1,12 +1,14 @@
 import * as jwt from "jsonwebtoken";
-import { Schema } from "mongoose";
 
 import { config } from "../configs/config";
+import { TokenEnum } from "../enums/tokenType.enum";
+import { TokenEnumList } from "../enums/tokenTypeList.enum";
+import { ApiError } from "../errors/api.error";
 import { IToken } from "../interfaces/IToken";
+import { tokenRepository } from "../repositories/token.repository";
 
 class TokenServices {
-  public generatePair(payload: { userId: Schema.Types.ObjectId }): IToken {
-    console.log("Generate pair poyload - ", payload);
+  public generatePair(payload: { userId: string }): IToken {
     return {
       access: jwt.sign(payload, config.JWT_ACCESS, {
         expiresIn: config.JWT_ACCESS_EXP,
@@ -18,12 +20,14 @@ class TokenServices {
     };
   }
 
-  public checkAccessToken(token: string): string {
-    return jwt.verify(token, config.JWT_ACCESS) as string;
-  }
-
-  public checkRefreshToken(token: string): string {
-    return jwt.verify(token, config.JWT_REFRESH) as string;
+  public async checkToken(
+    token: string,
+    tokenType: TokenEnumList,
+  ): Promise<string> {
+    if (!(await tokenRepository.findOne(token))) {
+      throw new ApiError("Authentication token is missing.", 401);
+    }
+    return jwt.verify(token, config[TokenEnum[tokenType]]) as string;
   }
 }
 export const tokenServices = new TokenServices();

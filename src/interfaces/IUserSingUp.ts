@@ -1,5 +1,5 @@
 import IUserLogin from "./IUserLogin";
 
-export default interface IUserSingIn extends IUserLogin {
+export default interface IUserSingUp extends IUserLogin {
   email: string;
 }

@@ -1,7 +1,5 @@
-import { Schema } from "mongoose";
-
 export default interface ICar {
-  _id?: Schema.Types.ObjectId;
+  _id?: string;
   brand: string;
   yearBuild: number;
   price: number;

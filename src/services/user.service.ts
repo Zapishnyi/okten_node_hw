@@ -1,4 +1,5 @@
 import IUser from "../interfaces/IUser";
+import IUserNoID from "../interfaces/IUserNoID";
 import { userRepository } from "../repositories/user.repository";
 
 class UserServices {
@@ -17,7 +18,10 @@ class UserServices {
     return await userRepository.createOne(newUser);
   }
 
-  public async updateOne(userId: string, dto: IUser): Promise<IUser | null> {
+  public async updateOne(
+    userId: string,
+    dto: IUserNoID,
+  ): Promise<IUser | null> {
     return await userRepository.updateOne(userId, dto);
   }
 

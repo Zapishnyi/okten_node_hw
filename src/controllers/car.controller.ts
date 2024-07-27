@@ -21,7 +21,12 @@ class CarController {
 
   public async addOne(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(201).json(await carServices.createOne(req.body));
+      res.status(201).json(
+        await carServices.createOne({
+          ...req.body,
+          ownerId: res.locals.userId,
+        }),
+      );
     } catch (err) {
       next(err);
     }

@@ -1,10 +1,8 @@
-import { Schema } from "mongoose";
-
 export interface IToken {
-  _id?: Schema.Types.ObjectId;
+  _id?: string;
   access: string;
   refresh: string;
-  _userId?: Schema.Types.ObjectId;
+  _userId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

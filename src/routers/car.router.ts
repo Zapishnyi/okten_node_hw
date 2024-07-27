@@ -1,41 +1,42 @@
 import { Router } from "express";
 
 import { carController } from "../controllers/car.controller";
-import { schemaModel } from "../enums/schemaModel.enum";
+import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
-import { validation } from "../middlewares/user.car.check";
+import { carCheck } from "../middlewares/car.check";
+import { idCheck } from "../middlewares/id.check";
 
 const router = Router();
 
 // Get All Car
 
-router.get("/", auth.accessTokenCheck(), carController.findAll);
-
-// Get one Car by ID
-
-router.get(
-  "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
-  carController.findOne,
-);
+router.get("/", auth.tokenCheck(TokenEnumList.access), carController.findAll);
 
 //  Add one Car
 
 router.post(
   "/",
-  auth.accessTokenCheck(),
-  validation.userOrCar(true, schemaModel.Car),
+  auth.tokenCheck(TokenEnumList.access),
+  carCheck.validation(true),
   carController.addOne,
+);
+
+// Get one Car by ID
+
+router.get(
+  "/:id",
+  auth.tokenCheck(TokenEnumList.access),
+  carController.findOne,
 );
 
 // Edit one Car by ID
 
 router.patch(
   "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
-  validation.userOrCar(false, schemaModel.Car),
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  carCheck.validation(false),
+  carCheck.role(),
   carController.updateOne,
 );
 
@@ -43,9 +44,10 @@ router.patch(
 
 router.put(
   "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
-  validation.userOrCar(true, schemaModel.Car),
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  carCheck.validation(false),
+  carCheck.role(),
   carController.replaceOne,
 );
 
@@ -53,8 +55,9 @@ router.put(
 
 router.delete(
   "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  carCheck.role(),
   carController.deleteOne,
 );
 

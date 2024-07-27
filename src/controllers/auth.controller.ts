@@ -23,30 +23,23 @@ class AuthController {
     try {
       res
         .status(200)
-        .json(
-          await authServices.refresh(
-            res.locals.userId.userId,
-            res.locals.token,
-          ),
-        );
+        .json(await authServices.refresh(res.locals.userId, res.locals.token));
     } catch (err) {
       next(err);
     }
   }
   public async log_outCurrent(req: Request, res: Response, next: NextFunction) {
     try {
-      res
-        .status(200)
-        .json(await authServices.log_outCurrent(req.res?.locals.token));
+      await authServices.log_outCurrent(res.locals.token);
+      res.status(200).json("Logged out successfully");
     } catch (err) {
       next(err);
     }
   }
   public async log_outAll(req: Request, res: Response, next: NextFunction) {
     try {
-      res
-        .status(200)
-        .json(await authServices.log_outAll(req.res?.locals.userId));
+      await authServices.log_outAll(res.locals.userId);
+      res.status(200).json("Logged out successfully from all devices");
     } catch (err) {
       next(err);
     }

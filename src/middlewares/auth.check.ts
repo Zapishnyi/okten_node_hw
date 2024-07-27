@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "joi";
 import { TokenExpiredError } from "jsonwebtoken";
 
+import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { ApiError } from "../errors/api.error";
-import IUserFull from "../interfaces/IUserFull";
-import { tokenRepository } from "../repositories/tokenrepository";
+import { ITokenPayload } from "../interfaces/ITokenPayload";
+import IUser from "../interfaces/IUser";
 import { hashService } from "../services/hash.service";
 import { tokenServices } from "../services/token.service";
 import { userServices } from "../services/user.service";
@@ -14,10 +15,10 @@ class AuthCheck {
   public passwordCheck() {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const user: IUserFull | null = await userServices.findOneByUserName(
+        const user: IUser | null = await userServices.findOneByUserName(
           req.body.userName,
         );
-        res.locals.userId = user?._id;
+        res.locals.userId = user?._id.toString();
         if (
           !(await hashService.compare(
             await req.body.password,
@@ -43,37 +44,21 @@ class AuthCheck {
       }
     };
   }
-  public accessTokenCheck() {
-    return async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const accessToken = req.headers.authorization?.split(" ")[1];
-        if (!accessToken) {
-          throw new ApiError("Not authorized", 401);
-        } else {
-          res.locals.userId = tokenServices.checkAccessToken(accessToken);
-        }
-        console.log("Locals", res.locals);
-        next();
-      } catch (err) {
-        if (err instanceof TokenExpiredError) {
-          err = new ApiError(err.message, 401);
-        }
-        next(err);
-      }
-    };
-  }
 
-  public refreshTokenCheck() {
+  public tokenCheck(tokenType: TokenEnumList) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const refreshToken = req.headers.authorization?.split(" ")[1];
-        if (!refreshToken) {
-          throw new ApiError("Not authorized", 401);
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) {
+          throw new ApiError("Authentication token is missing.", 401);
         } else {
-          res.locals.userId = tokenServices.checkRefreshToken(refreshToken);
-          res.locals.token = refreshToken;
-          console.log("Refresh local storage", res.locals.userId);
-          await tokenRepository.findOne(refreshToken);
+          res.locals.userId = (
+            (await tokenServices.checkToken(
+              token,
+              tokenType,
+            )) as unknown as ITokenPayload
+          ).userId;
+          res.locals.token = token;
         }
         next();
       } catch (err) {

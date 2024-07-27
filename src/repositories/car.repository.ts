@@ -13,6 +13,7 @@ class CarRepository {
 
   public async findOne(id: string): Promise<ICar | null> {
     const result = await CarModel.findById(id);
+
     noIdFoundCheck(id, result);
     return result;
   }

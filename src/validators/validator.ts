@@ -5,6 +5,7 @@ import { GenderEnum } from "../enums/gender.enum";
 import { RoleEnum } from "../enums/role.enums";
 import ICar from "../interfaces/ICar";
 import IUser from "../interfaces/IUser";
+import IUserLogin from "../interfaces/IUserLogin";
 
 class Schema {
   // user
@@ -36,7 +37,7 @@ class Schema {
   public static img = Joi.string().uri().trim();
   public static secondHand = Joi.boolean();
 
-  public auth: Joi.ObjectSchema<IUser> = Joi.object({
+  public auth: Joi.ObjectSchema<IUserLogin> = Joi.object({
     userName: Schema.userName.required(),
     password: Schema.password.required(),
   });

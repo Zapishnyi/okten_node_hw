@@ -19,6 +19,14 @@ class UserController {
     }
   }
 
+  public async findMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.status(200).json(await userServices.findOne(res.locals.userId));
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public async addOne(req: Request, res: Response, next: NextFunction) {
     try {
       res.status(201).json(await userServices.createOne(req.body));

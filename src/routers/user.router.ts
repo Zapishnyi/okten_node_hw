@@ -1,23 +1,33 @@
 import { Router } from "express";
 
 import { userController } from "../controllers/user.controller";
-import { schemaModel } from "../enums/schemaModel.enum";
+import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
-import { validation } from "../middlewares/user.car.check";
+import { idCheck } from "../middlewares/id.check";
+import { userCheck } from "../middlewares/user.check";
 
 const router = Router();
 
 // Get All Users
 
-// router.get("/", userController.findAll);
+router.get(
+  "/",
+  auth.tokenCheck(TokenEnumList.access),
+  userCheck.role(),
+  userController.findAll,
+);
+
+// Get me
+
+router.get("/me", auth.tokenCheck(TokenEnumList.access), userController.findMe);
 
 // Get one user by ID
 
 router.get(
   "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
-  validation.userRoleCheck(),
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  userCheck.role(),
   userController.findOne,
 );
 
@@ -25,10 +35,10 @@ router.get(
 
 router.patch(
   "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
-  validation.userRoleCheck(),
-  validation.userOrCar(false, schemaModel.User),
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  userCheck.role(),
+  userCheck.validation(false),
   userController.updateOne,
 );
 
@@ -45,9 +55,9 @@ router.patch(
 
 router.delete(
   "/:id",
-  auth.accessTokenCheck(),
-  validation.id(),
-  validation.userRoleCheck(),
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  userCheck.role(),
   userController.deleteOne,
 );
 

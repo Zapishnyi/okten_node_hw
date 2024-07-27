@@ -1,5 +1,7 @@
 import { noIdFoundCheck } from "../errors/noIdFound";
 import IUser from "../interfaces/IUser";
+import IUserNoID from "../interfaces/IUserNoID";
+import IUserSingUp from "../interfaces/IUserSingUp";
 import { UserModel } from "../models/user.model";
 
 class UserRepository {
@@ -7,7 +9,7 @@ class UserRepository {
     return await UserModel.find();
   }
 
-  public async createOne(dto: IUser): Promise<IUser> {
+  public async createOne(dto: IUserSingUp): Promise<IUser> {
     await UserModel.syncIndexes();
     return await UserModel.create(dto);
   }
@@ -23,7 +25,7 @@ class UserRepository {
     return result;
   }
 
-  public async updateOne(id: string, dto: IUser): Promise<IUser | null> {
+  public async updateOne(id: string, dto: IUserNoID): Promise<IUser | null> {
     const { userName, password, email, ...newDto } = dto;
     console.log(userName, password, email);
     const result: IUser | null = await UserModel.findOneAndUpdate(

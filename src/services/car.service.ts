@@ -1,4 +1,5 @@
 import ICar from "../interfaces/ICar";
+import { CarModel } from "../models/car.model";
 import { carRepository } from "../repositories/car.repository";
 
 class CarServices {
@@ -6,24 +7,25 @@ class CarServices {
     return await carRepository.findAll();
   }
 
-  public async findOne(userId: string): Promise<ICar | null> {
-    return await carRepository.findOne(userId);
+  public async findOne(carId: string): Promise<ICar | null> {
+    return await carRepository.findOne(carId);
   }
 
-  public async createOne(newUser: ICar): Promise<ICar> {
-    return await carRepository.createOne(newUser);
+  public async createOne(dto: ICar): Promise<ICar> {
+    await CarModel.syncIndexes();
+    return await carRepository.createOne(dto);
   }
 
-  public async updateOne(userId: string, dto: ICar): Promise<ICar | null> {
-    return await carRepository.updateOne(userId, dto);
+  public async updateOne(carId: string, dto: ICar): Promise<ICar | null> {
+    return await carRepository.updateOne(carId, dto);
   }
 
-  public async replaceOne(userId: string, dto: ICar): Promise<ICar | null> {
-    return await carRepository.replaceOne(userId, dto);
+  public async replaceOne(carId: string, dto: ICar): Promise<ICar | null> {
+    return await carRepository.replaceOne(carId, dto);
   }
 
-  public async deleteOne(userId: string): Promise<ICar | null> {
-    return await carRepository.deleteOne(userId);
+  public async deleteOne(carId: string): Promise<ICar | null> {
+    return await carRepository.deleteOne(carId);
   }
 }
 
