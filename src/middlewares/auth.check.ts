@@ -4,7 +4,7 @@ import { TokenExpiredError } from "jsonwebtoken";
 
 import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { ApiError } from "../errors/api.error";
-import { ITokenPayload } from "../interfaces/ITokenPayload";
+import { IPayloadForToken } from "../interfaces/IPayloadForToken";
 import IUser from "../interfaces/IUser";
 import { hashService } from "../services/hash.service";
 import { tokenServices } from "../services/token.service";
@@ -48,15 +48,25 @@ class AuthCheck {
   public tokenCheck(tokenType: TokenEnumList) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const token = req.headers.authorization?.split(" ")[1];
+        let token: string | undefined;
+        switch (tokenType) {
+          case "access" || "refresh": {
+            token = req.headers.authorization?.split(" ")[1];
+            break;
+          }
+          case "action": {
+            token = req.body.actionToken;
+            break;
+          }
+        }
         if (!token) {
-          throw new ApiError("Authentication token is missing.", 401);
+          throw new ApiError("Token is missing.", 401);
         } else {
           res.locals.userId = (
             (await tokenServices.checkToken(
               token,
               tokenType,
-            )) as unknown as ITokenPayload
+            )) as unknown as IPayloadForToken
           ).userId;
           res.locals.token = token;
         }

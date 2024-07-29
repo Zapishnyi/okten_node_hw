@@ -1,5 +1,6 @@
 import IUser from "../interfaces/IUser";
 import IUserNoID from "../interfaces/IUserNoID";
+import IUserSingUp from "../interfaces/IUserSingUp";
 import { userRepository } from "../repositories/user.repository";
 
 class UserServices {
@@ -14,7 +15,7 @@ class UserServices {
     return await userRepository.findByUserName(userName);
   }
 
-  public async createOne(newUser: IUser): Promise<IUser> {
+  public async createOne(newUser: IUserSingUp): Promise<IUser> {
     return await userRepository.createOne(newUser);
   }
 

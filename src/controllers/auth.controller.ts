@@ -19,6 +19,22 @@ class AuthController {
     }
   }
 
+  public async verify(req: Request, res: Response, next: NextFunction) {
+    try {
+      res
+        .status(200)
+        .json(
+          await authServices.verify(
+            res.locals.userId,
+            { isVerified: true },
+            res.locals.token,
+          ),
+        );
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       res
@@ -30,7 +46,7 @@ class AuthController {
   }
   public async log_outCurrent(req: Request, res: Response, next: NextFunction) {
     try {
-      await authServices.log_outCurrent(res.locals.token);
+      await authServices.log_outCurrent(res.locals.token, res.locals.userId);
       res.status(200).json("Logged out successfully");
     } catch (err) {
       next(err);

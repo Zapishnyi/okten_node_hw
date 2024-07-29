@@ -1,4 +1,4 @@
-export interface IToken {
+export interface ITokenAuth {
   _id?: string;
   access: string;
   refresh: string;

@@ -20,6 +20,12 @@ router.get(
   authController.login,
 );
 
+router.post(
+  "/verify",
+  auth.tokenCheck(TokenEnumList.action),
+  authController.verify,
+);
+
 // Refresh
 
 router.get(

@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-import { IToken } from "../interfaces/IToken";
+import { ITokenAuth } from "../interfaces/ITokenAuth";
 import { UserModel } from "./user.model";
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema(
+const authTokenSchema = new Schema(
   {
     access: { type: String, required: true },
     refresh: { type: String, required: true },
@@ -17,4 +17,7 @@ const userSchema = new Schema(
   },
 );
 
-export const TokenModel = mongoose.model<IToken>("tokens", userSchema);
+export const AuthTokenModel = mongoose.model<ITokenAuth>(
+  "auth_tokens",
+  authTokenSchema,
+);
