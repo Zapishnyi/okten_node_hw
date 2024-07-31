@@ -13,7 +13,9 @@ class UserController {
 
   public async findOne(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await userServices.findOne(req.params.id));
+      res
+        .status(200)
+        .json(await userServices.findOneByParam({ _id: req.params.id }));
     } catch (err) {
       next(err);
     }
@@ -21,7 +23,9 @@ class UserController {
 
   public async findMe(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await userServices.findOne(res.locals.userId));
+      res
+        .status(200)
+        .json(await userServices.findOneByParam({ _id: res.locals.userId }));
     } catch (err) {
       next(err);
     }
@@ -39,21 +43,21 @@ class UserController {
     try {
       res
         .status(200)
-        .json(await userServices.updateOne(req.params.id, req.body));
+        .json(await userServices.updateOne(res.locals._userId, req.body));
     } catch (err) {
       next(err);
     }
   }
   //
-  public async replaceOne(req: Request, res: Response, next: NextFunction) {
-    try {
-      res
-        .status(200)
-        .json(await userServices.replaceOne(req.params.id, req.body));
-    } catch (err) {
-      next(err);
-    }
-  }
+  // public async replaceOne(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     res
+  //       .status(200)
+  //       .json(await userServices.replaceOne(req.params.id, req.body));
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
   //
   public async deleteOne(req: Request, res: Response, next: NextFunction) {
     try {

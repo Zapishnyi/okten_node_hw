@@ -5,6 +5,8 @@ import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
 import { idCheck } from "../middlewares/id.check";
 import { userCheck } from "../middlewares/user.check";
+import { validate } from "../middlewares/validate";
+import { validUser } from "../validators/user.validator";
 
 const router = Router();
 
@@ -38,7 +40,7 @@ router.patch(
   auth.tokenCheck(TokenEnumList.access),
   idCheck(),
   userCheck.role(),
-  userCheck.validation(false),
+  validate(validUser.userUpdate),
   userController.updateOne,
 );
 

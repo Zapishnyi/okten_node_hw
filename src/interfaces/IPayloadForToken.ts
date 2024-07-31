@@ -1,5 +1,5 @@
 export interface IPayloadForToken {
-  userId: string;
+  _userId: string;
   iat: number;
   exp: number;
 }

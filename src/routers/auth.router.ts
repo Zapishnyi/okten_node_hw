@@ -3,27 +3,48 @@ import { Router } from "express";
 import { authController } from "../controllers/auth.controller";
 import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
-import { userCheck } from "../middlewares/user.check";
+import { validate } from "../middlewares/validate";
+import { validUser } from "../validators/user.validator";
 
 const router = Router();
 
 // Register
 
-router.post("/sing-up", userCheck.validation(true), authController.singUp);
+router.post("/sing-up", validate(validUser.singUp), authController.singUp);
 
 // Login
 
 router.get(
   "/login",
-  auth.credentialsValidation(),
+  validate(validUser.login),
   auth.passwordCheck(),
   authController.login,
 );
+
+// Verify Email
 
 router.post(
   "/verify",
   auth.tokenCheck(TokenEnumList.action),
   authController.verify,
+);
+
+// Forgot Password get token
+
+router.post(
+  "/forgot-password",
+  validate(validUser.emailCheck),
+  auth.emailCheck(),
+  authController.forgotPassword,
+);
+
+// Forgot Password renew Password
+
+router.patch(
+  "/forgot-password",
+  auth.tokenCheck(TokenEnumList.action),
+  validate(validUser.passwordCheck),
+  authController.renewPassword,
 );
 
 // Refresh

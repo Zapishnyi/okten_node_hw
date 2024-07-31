@@ -1,6 +1,9 @@
-import IUser from "../interfaces/IUser";
-import IUserNoID from "../interfaces/IUserNoID";
-import IUserSingUp from "../interfaces/IUserSingUp";
+import {
+  IUser,
+  IUserSingUp,
+  IUserUpdate,
+  IUserUpdated,
+} from "../interfaces/IUser";
 import { userRepository } from "../repositories/user.repository";
 
 class UserServices {
@@ -8,11 +11,13 @@ class UserServices {
     return await userRepository.findAll();
   }
 
-  public async findOne(userId: string): Promise<IUser | null> {
-    return await userRepository.findOne(userId);
+  public async findOneById(userId: string): Promise<IUser | null> {
+    return await userRepository.findOneById(userId);
   }
-  public async findOneByUserName(userName: string): Promise<IUser | null> {
-    return await userRepository.findByUserName(userName);
+  public async findOneByParam(param: {
+    [key: string]: string;
+  }): Promise<IUserUpdated | null> {
+    return await userRepository.findByParam(param);
   }
 
   public async createOne(newUser: IUserSingUp): Promise<IUser> {
@@ -21,14 +26,14 @@ class UserServices {
 
   public async updateOne(
     userId: string,
-    dto: IUserNoID,
-  ): Promise<IUser | null> {
+    dto: IUserUpdate,
+  ): Promise<IUserUpdated | null> {
     return await userRepository.updateOne(userId, dto);
   }
 
-  public async replaceOne(userId: string, dto: IUser): Promise<IUser | null> {
-    return await userRepository.replaceOne(userId, dto);
-  }
+  // public async replaceOne(userId: string, dto: IUser): Promise<IUser | null> {
+  //   return await userRepository.replaceOne(userId, dto);
+  // }
 
   public async deleteOne(userId: string): Promise<IUser | null> {
     return await userRepository.deleteOne(userId);

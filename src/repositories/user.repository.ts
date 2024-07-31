@@ -1,57 +1,61 @@
-import { noIdFoundCheck } from "../errors/noIdFound";
-import IUser from "../interfaces/IUser";
-import IUserNoID from "../interfaces/IUserNoID";
-import IUserSingUp from "../interfaces/IUserSingUp";
+import { noFoundCheck } from "../errors/noIdFound";
+import { IUserUpdate, IUserUpdated } from "../interfaces/IUser";
 import { UserModel } from "../models/user.model";
 
 class UserRepository {
-  public async findAll(): Promise<IUser[]> {
+  public async findAll(): Promise<IUserUpdated[]> {
     return await UserModel.find();
   }
 
-  public async createOne(dto: IUserSingUp): Promise<IUser> {
+  public async createOne(dto: IUserUpdate): Promise<IUserUpdated> {
     await UserModel.syncIndexes();
     return await UserModel.create(dto);
   }
 
-  public async findOne(id: string): Promise<IUser | null> {
-    const result: IUser | null = await UserModel.findById(id);
-    noIdFoundCheck(id, result);
+  public async findOneById(id: string): Promise<IUserUpdated | null> {
+    const result: IUserUpdated | null = await UserModel.findById(id);
+    noFoundCheck(id, result);
     return result;
   }
-  public async findByUserName(userName: string): Promise<IUser | null> {
-    const result: IUser | null = await UserModel.findOne({ userName });
-    noIdFoundCheck(userName, result);
+  public async findByParam(param: {
+    [key: string]: string;
+  }): Promise<IUserUpdated | null> {
+    const result: IUserUpdated | null = await UserModel.findOne(param);
+    noFoundCheck(Object.keys(param)[0], result);
     return result;
   }
 
-  public async updateOne(id: string, dto: IUserNoID): Promise<IUser | null> {
-    const { userName, password, email, ...newDto } = dto;
-    console.log(userName, password, email);
-    const result: IUser | null = await UserModel.findOneAndUpdate(
+  public async updateOne(
+    id: string,
+    dto: IUserUpdate,
+  ): Promise<IUserUpdated | null> {
+    const result: IUserUpdated | null = await UserModel.findOneAndUpdate(
       { _id: id },
-      { ...newDto },
+      dto,
       { returnDocument: "after" },
     );
-    noIdFoundCheck(id, result);
+    noFoundCheck(id, result);
     return result;
   }
+  //
+  // public async replaceOne(
+  //   id: string,
+  //   dto: IUserUpdate,
+  // ): Promise<IUserUpdated | null> {
+  //   const result: IUserUpdated | null = await UserModel.findOneAndReplace(
+  //     { _id: id },
+  //     { ...dto },
+  //     { returnDocument: "after" },
+  //   );
+  //   noFoundCheck(id, result);
+  //   return result;
+  // }
 
-  public async replaceOne(id: string, dto: IUser): Promise<IUser | null> {
-    const result: IUser | null = await UserModel.findOneAndReplace(
-      { _id: id },
-      { ...dto },
-      { returnDocument: "after" },
-    );
-    noIdFoundCheck(id, result);
-    return result;
-  }
-
-  public async deleteOne(id: string): Promise<IUser | null> {
-    const result: IUser | null = await UserModel.findOneAndDelete({
+  public async deleteOne(id: string): Promise<IUserUpdated | null> {
+    const result: IUserUpdated | null = await UserModel.findOneAndDelete({
       _id: id,
     });
-    noIdFoundCheck(id, result);
+    noFoundCheck(id, result);
     return result;
   }
 }

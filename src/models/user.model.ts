@@ -2,17 +2,17 @@ import mongoose from "mongoose";
 
 import { GenderEnum } from "../enums/gender.enum";
 import { RoleEnum } from "../enums/role.enums";
-import IUser from "../interfaces/IUser";
+import { IUser } from "../interfaces/IUser";
 
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
     name: { type: String, required: false },
-    userName: { type: String, require: true, unique: true },
-    password: { type: String, required: true },
+    userName: { type: String, require: false, unique: true },
+    password: { type: String, required: false },
     age: { type: Number, required: false },
-    email: { type: String, require: true, unique: true },
+    email: { type: String, require: false, unique: true },
     phone: { type: String, require: false },
     gender: { type: String, enum: GenderEnum, required: false },
     role: {
@@ -21,7 +21,7 @@ const userSchema = new Schema(
       required: false,
       default: RoleEnum.User,
     },
-    isVerified: { type: Boolean, require: true, default: false },
+    isVerified: { type: Boolean, require: false, default: false },
   },
   {
     timestamps: true,

@@ -11,6 +11,10 @@ export const emailResponseTree = {
   },
   [EmailTypeEnum.FORGOT_PASSWORD]: {
     subject: "Password recovery",
-    template: "forgot-password",
+    template: "forgot_password",
+  },
+  [EmailTypeEnum.PASSWORD_RENEWED]: {
+    subject: "Password renewed",
+    template: "password_renewed",
   },
 };

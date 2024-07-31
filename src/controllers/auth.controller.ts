@@ -13,7 +13,7 @@ class AuthController {
 
   public async login(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await authServices.login(res.locals.userId));
+      res.status(200).json(await authServices.login(res.locals._userId));
     } catch (err) {
       next(err);
     }
@@ -25,8 +25,33 @@ class AuthController {
         .status(200)
         .json(
           await authServices.verify(
-            res.locals.userId,
+            res.locals._userId,
             { isVerified: true },
+            res.locals.token,
+          ),
+        );
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      await authServices.forgotPassword(res.locals.user);
+      res.sendStatus(204);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async renewPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      res
+        .status(200)
+        .json(
+          await authServices.renewPassword(
+            res.locals._userId,
+            req.body,
             res.locals.token,
           ),
         );
@@ -39,14 +64,14 @@ class AuthController {
     try {
       res
         .status(200)
-        .json(await authServices.refresh(res.locals.userId, res.locals.token));
+        .json(await authServices.refresh(res.locals._userId, res.locals.token));
     } catch (err) {
       next(err);
     }
   }
   public async log_outCurrent(req: Request, res: Response, next: NextFunction) {
     try {
-      await authServices.log_outCurrent(res.locals.token, res.locals.userId);
+      await authServices.log_outCurrent(res.locals.token, res.locals._userId);
       res.status(200).json("Logged out successfully");
     } catch (err) {
       next(err);
@@ -54,7 +79,7 @@ class AuthController {
   }
   public async log_outAll(req: Request, res: Response, next: NextFunction) {
     try {
-      await authServices.log_outAll(res.locals.userId);
+      await authServices.log_outAll(res.locals._userId);
       res.status(200).json("Logged out successfully from all devices");
     } catch (err) {
       next(err);

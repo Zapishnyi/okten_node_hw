@@ -12,7 +12,7 @@ const carsSchema = new Schema(
     price: { type: String, required: true },
     img: { type: String, required: true },
     secondHand: { type: Boolean, required: true },
-    ownerId: { type: Schema.Types.ObjectId, required: true, ref: UserModel },
+    _ownerId: { type: Schema.Types.ObjectId, required: true, ref: UserModel },
   },
   {
     timestamps: true,

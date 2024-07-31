@@ -19,11 +19,11 @@ class EmailService {
         user: config.SMTP_ADDRESS,
         pass: config.IMAP,
       },
-      // tls: {
-      //   rejectUnauthorized: false,
-      // },
-      // logger: true, // Enable logging
-      // debug: true, // Show debug output
+      tls: {
+        rejectUnauthorized: false,
+      },
+      //   logger: true, // Enable logging
+      //   debug: true, // Show debug output
     });
     this.transporter.use(
       "compile",

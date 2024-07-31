@@ -1,4 +1,4 @@
-import { noIdFoundCheck } from "../errors/noIdFound";
+import { noFoundCheck } from "../errors/noIdFound";
 import ICar from "../interfaces/ICar";
 import { CarModel } from "../models/car.model";
 
@@ -14,7 +14,7 @@ class CarRepository {
   public async findOne(id: string): Promise<ICar | null> {
     const result = await CarModel.findById(id);
 
-    noIdFoundCheck(id, result);
+    noFoundCheck(id, result);
     return result;
   }
 
@@ -24,7 +24,7 @@ class CarRepository {
       { ...dto },
       { returnDocument: "after" },
     );
-    noIdFoundCheck(id, result);
+    noFoundCheck(id, result);
     return result;
   }
 
@@ -34,13 +34,13 @@ class CarRepository {
       { ...dto },
       { returnDocument: "after" },
     );
-    noIdFoundCheck(id, result);
+    noFoundCheck(id, result);
     return result;
   }
 
   public async deleteOne(id: string): Promise<ICar | null> {
     const result = await CarModel.findOneAndDelete({ _id: id });
-    noIdFoundCheck(id, result);
+    noFoundCheck(id, result);
     return result;
   }
 }
