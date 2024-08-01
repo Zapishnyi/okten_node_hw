@@ -3,20 +3,26 @@ import dayjs from "dayjs";
 
 import { config } from "../configs/config";
 import { EmailTypeEnum } from "../enums/email-type.enum";
+import { authTokenRepository } from "../repositories/auth_token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "../services/email.service";
 
 const UserNoActivity = async () => {
   try {
-    const noActivityUsers = await userRepository.findManyByParam({
-      createdAt: { $lte: dayjs().subtract(5, "days").toDate() },
-    });
-    if (noActivityUsers?.length) {
-      for (const user of noActivityUsers) {
-        await emailService.sendEmail(EmailTypeEnum.REMIND, user.email, {
-          name: user.userName,
-          frontUrl: config.FRONT_END_URL,
-        });
+    const noActivityUsersId = (
+      await authTokenRepository.findManyByParams({
+        createdAt: { $lte: dayjs().subtract(5, "days").toDate() },
+      })
+    )?.map((e) => e._userId);
+    if (noActivityUsersId) {
+      for (const id of noActivityUsersId) {
+        const user = await userRepository.findOneById(id);
+        if (user) {
+          await emailService.sendEmail(EmailTypeEnum.REMIND, user.email, {
+            name: user.userName,
+            frontUrl: config.FRONT_END_URL,
+          });
+        }
       }
     }
   } catch (err) {
