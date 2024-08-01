@@ -32,7 +32,7 @@ router.post(
 // Forgot Password get token
 
 router.post(
-  "/forgot-password",
+  "/password/forgot",
   validate(validUser.emailCheck),
   auth.emailCheck(),
   authController.forgotPassword,
@@ -41,9 +41,18 @@ router.post(
 // Forgot Password renew Password
 
 router.patch(
-  "/forgot-password",
+  "/password/forgot",
   auth.tokenCheck(TokenEnumList.action),
   validate(validUser.passwordCheck),
+  authController.renewPassword,
+);
+
+// Password change
+
+router.patch(
+  "/password/change",
+  auth.tokenCheck(TokenEnumList.access),
+  validate(validUser.changePasswordCheck),
   authController.renewPassword,
 );
 

@@ -6,3 +6,11 @@ export interface ITokenAuth {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface ITokenAuthUpdate
+  extends Partial<
+    Pick<
+      ITokenAuth,
+      "updatedAt" | "_id" | "_userId" | "refresh" | "access" | "createdAt"
+    >
+  > {}

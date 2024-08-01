@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import { Error } from "mongoose";
 
 import { config } from "./configs/config";
+import { jobRunner } from "./crons/cronStack";
 import { IAPIError } from "./interfaces/IAPIError";
 import { authRouter } from "./routers/auth.router";
 import { carRouter } from "./routers/car.router";
@@ -33,6 +34,7 @@ app.use(
   },
 );
 
+// Exemption error handler
 process.on("uncaughtException", (err: Error) => {
   console.error("Uncaught Exception error:", err.message, err.stack);
   process.exit(1);
@@ -41,4 +43,6 @@ process.on("uncaughtException", (err: Error) => {
 app.listen(config.APP_PORT, config.APP_HOST, async () => {
   await mongoose.connect(config.MONGO_URI);
   console.log(`server started at port ${config.APP_PORT} `);
+  //   Cron job runner:
+  jobRunner();
 });

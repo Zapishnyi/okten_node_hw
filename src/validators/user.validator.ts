@@ -45,6 +45,11 @@ export class validUser {
     Joi.object({
       password: this.password.required(),
     });
+  public static changePasswordCheck: Joi.ObjectSchema<IUserPasswordReNew> =
+    Joi.object({
+      oldPassword: this.password.required(),
+      password: this.password.required(),
+    });
 
   public static singUp: Joi.ObjectSchema<IUserSingUp> = Joi.object({
     userName: this.userName.required(),
