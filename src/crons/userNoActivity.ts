@@ -11,7 +11,10 @@ const UserNoActivity = async () => {
   try {
     const noActivityUsersId = (
       await authTokenRepository.findManyByParams({
-        createdAt: { $lte: dayjs().subtract(5, "days").toDate() },
+        createdAt: {
+          $lt: dayjs().subtract(5, "days").toDate(),
+          $gt: dayjs().subtract(6, "days").toDate(),
+        },
       })
     )?.map((e) => e._userId);
     if (noActivityUsersId) {
