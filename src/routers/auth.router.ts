@@ -10,14 +10,20 @@ const router = Router();
 
 // Register
 
-router.post("/sing-up", validate(validUser.singUp), authController.singUp);
+router.post(
+  "/sing-up",
+  validate(validUser.singUp),
+  auth.newPasswordCheck(),
+  authController.singUp,
+);
 
 // Login
 
 router.get(
   "/login",
   validate(validUser.login),
-  auth.passwordCheck(),
+  auth.passwordCheckBeforeLogin(),
+
   authController.login,
 );
 
@@ -44,6 +50,7 @@ router.patch(
   "/password/forgot",
   auth.tokenCheck(TokenEnumList.action),
   validate(validUser.passwordCheck),
+  auth.newPasswordCheck(),
   authController.renewPassword,
 );
 
@@ -54,6 +61,7 @@ router.patch(
   auth.tokenCheck(TokenEnumList.access),
   validate(validUser.changePasswordCheck),
   auth.oldPasswordCheck(),
+  auth.newPasswordCheck(),
   authController.renewPassword,
 );
 

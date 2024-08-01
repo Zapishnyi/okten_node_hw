@@ -17,4 +17,9 @@ export const emailResponseTree = {
     subject: "Password changed",
     template: "password_changed",
   },
+
+  [EmailTypeEnum.REMIND]: {
+    subject: "You've been away for a while!",
+    template: "remind",
+  },
 };

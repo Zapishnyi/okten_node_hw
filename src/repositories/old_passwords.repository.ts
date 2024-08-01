@@ -13,6 +13,12 @@ class OldPasswordsRepository {
       _userId,
     });
   }
+  public async findManyByParams(
+    params: FilterQuery<IOldPassword>,
+  ): Promise<IOldPasswordUpdated[] | null> {
+    return await oldPasswordModel.find(params);
+  }
+
   public async findOneByParams(
     params: FilterQuery<IOldPassword>,
   ): Promise<IOldPasswordUpdated | null> {

@@ -7,6 +7,7 @@ export type EmailToPayloadType = {
     EmailPayloadType,
     "name" | "actionToken" | "frontUrl"
   >;
+  [EmailTypeEnum.REMIND]: PickRequired<EmailPayloadType, "name" | "frontUrl">;
   [EmailTypeEnum.LOG_OUT]: PickRequired<EmailPayloadType, "name" | "frontUrl">;
   [EmailTypeEnum.PASSWORD_CHANGED]: PickRequired<
     EmailPayloadType,

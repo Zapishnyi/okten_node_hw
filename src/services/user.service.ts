@@ -1,3 +1,5 @@
+import { FilterQuery } from "mongoose";
+
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import {
   IUser,
@@ -15,10 +17,16 @@ class UserServices {
   public async findOneById(userId: string): Promise<IUser | null> {
     return await userRepository.findOneById(userId);
   }
-  public async findOneByParam(param: {
-    [key: string]: string;
-  }): Promise<IUserUpdated | null> {
-    return await userRepository.findByParam(param);
+  public async findOneByParam(
+    param: FilterQuery<IUserUpdate>,
+  ): Promise<IUserUpdated | null> {
+    return await userRepository.findOneByParam(param);
+  }
+
+  public async findManyByParam(
+    param: FilterQuery<IUserUpdate>,
+  ): Promise<IUserUpdated[] | null> {
+    return await userRepository.findManyByParam(param);
   }
 
   public async createOne(newUser: IUserSingUp): Promise<IUser> {

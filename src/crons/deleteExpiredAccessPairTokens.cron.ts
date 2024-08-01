@@ -14,7 +14,7 @@ const expiredTokensDelete = async () => {
       `ExpiredTokens Deleted at ${dayjs().format("DD-MM-YY, hh:mm:ss")}`,
     );
   } catch (err) {
-    console.log("Crone failed with error:", err);
+    console.log(`${this} crone failed with error:`, err);
   }
 };
 

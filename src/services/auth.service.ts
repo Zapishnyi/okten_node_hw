@@ -74,8 +74,9 @@ class AuthServices {
       await oldPasswordsRepository.create(userOld.password, _userId);
       await actionTokenRepository.deleteOne(token);
       await authTokenRepository.deleteAll(_userId);
+      userOld.password = newPassword;
     }
-    return userOld ? { ...userOld, password: newPassword } : null;
+    return userOld;
   }
 
   public async login(userId: string): Promise<ITokenAuth> {

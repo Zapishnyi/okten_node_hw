@@ -1,7 +1,11 @@
 import { FilterQuery } from "mongoose";
 
 import { TokenEnum } from "../enums/tokenType.enum";
-import { ITokenAuth, ITokenAuthUpdate } from "../interfaces/ITokenAuth";
+import {
+  ITokenAuth,
+  ITokenAuthUpdate,
+  ITokenAuthUpdated,
+} from "../interfaces/ITokenAuth";
 import { AuthTokenModel } from "../models/authToken.model";
 import { tokenServices } from "../services/token.service";
 
@@ -28,6 +32,11 @@ class AuthTokenRepository {
     params: FilterQuery<ITokenAuthUpdate>,
   ): Promise<void> {
     await AuthTokenModel.deleteMany(params);
+  }
+  public async findManyByParams(
+    params: FilterQuery<ITokenAuthUpdate>,
+  ): Promise<ITokenAuthUpdated[] | null> {
+    return await AuthTokenModel.find(params);
   }
   public async findOne(token: string): Promise<ITokenAuth | null> {
     return await AuthTokenModel.findOne({
