@@ -32,23 +32,7 @@ export interface IUserUpdate
     >
   > {}
 
-export interface IUserUpdated
-  extends Pick<
-    IUser,
-    | "userName"
-    | "password"
-    | "email"
-    | "name"
-    | "age"
-    | "gender"
-    | "phone"
-    | "isVerified"
-    | "role"
-    | "updatedAt"
-    | "createdAt"
-  > {
-  _id: string;
-}
+export interface IUserUpdated extends Required<IUser> {}
 
 export interface IUserNoID
   extends Pick<

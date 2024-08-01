@@ -1,6 +1,7 @@
 import { config } from "../configs/config";
 import { ActionTypeEnum } from "../enums/action-type.enum";
 import { EmailTypeEnum } from "../enums/email-type.enum";
+import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import { ITokenAuth } from "../interfaces/ITokenAuth";
 import {
   IUser,
@@ -11,6 +12,7 @@ import {
 } from "../interfaces/IUser";
 import { actionTokenRepository } from "../repositories/action_token.repository";
 import { authTokenRepository } from "../repositories/auth_token.repository";
+import { oldPasswordsRepository } from "../repositories/old_passwords.repository";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "./email.service";
 import { hashService } from "./hash.service";
@@ -52,18 +54,28 @@ class AuthServices {
     dto: IUserPasswordReNew,
     token: string,
   ): Promise<IUserUpdated | null> {
-    const user = await userServices.updateOne(_userId, {
-      password: await hashService.hash(dto.password),
-    });
-    if (user) {
-      await emailService.sendEmail(EmailTypeEnum.PASSWORD_RENEWED, user.email, {
-        name: user.userName,
-        frontUrl: config.FRONT_END_URL,
-      });
+    const newPassword = await hashService.hash(dto.password);
+    const userOld = await userServices.updateOne(
+      _userId,
+      {
+        password: newPassword,
+      },
+      ReturnDocumentTypeEnum.Before,
+    );
+    if (userOld) {
+      await emailService.sendEmail(
+        EmailTypeEnum.PASSWORD_CHANGED,
+        userOld.email,
+        {
+          name: userOld.userName,
+          frontUrl: config.FRONT_END_URL,
+        },
+      );
+      await oldPasswordsRepository.create(userOld.password, _userId);
       await actionTokenRepository.deleteOne(token);
-      await authTokenRepository.deleteAll(user._id);
+      await authTokenRepository.deleteAll(_userId);
     }
-    return user;
+    return userOld ? { ...userOld, password: newPassword } : null;
   }
 
   public async login(userId: string): Promise<ITokenAuth> {
@@ -75,7 +87,11 @@ class AuthServices {
     dto: IUserVerify,
     actionToken: string,
   ): Promise<IUser | null> {
-    const userUpdated = await userServices.updateOne(userId, dto);
+    const userUpdated = await userServices.updateOne(
+      userId,
+      dto,
+      ReturnDocumentTypeEnum.After,
+    );
     await actionTokenRepository.deleteOne(actionToken);
     return userUpdated;
   }

@@ -1,3 +1,4 @@
+import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import { noFoundCheck } from "../errors/noIdFound";
 import { IUserUpdate, IUserUpdated } from "../interfaces/IUser";
 import { UserModel } from "../models/user.model";
@@ -28,11 +29,12 @@ class UserRepository {
   public async updateOne(
     id: string,
     dto: IUserUpdate,
+    returnType: ReturnDocumentTypeEnum,
   ): Promise<IUserUpdated | null> {
     const result: IUserUpdated | null = await UserModel.findOneAndUpdate(
       { _id: id },
       dto,
-      { returnDocument: "after" },
+      { returnDocument: returnType },
     );
     noFoundCheck(id, result);
     return result;

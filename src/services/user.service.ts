@@ -1,3 +1,4 @@
+import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import {
   IUser,
   IUserSingUp,
@@ -27,8 +28,9 @@ class UserServices {
   public async updateOne(
     userId: string,
     dto: IUserUpdate,
+    returnType: ReturnDocumentTypeEnum,
   ): Promise<IUserUpdated | null> {
-    return await userRepository.updateOne(userId, dto);
+    return await userRepository.updateOne(userId, dto, returnType);
   }
 
   // public async replaceOne(userId: string, dto: IUser): Promise<IUser | null> {

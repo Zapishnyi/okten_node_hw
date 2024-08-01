@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 import { GenderEnum } from "../enums/gender.enum";
 import { RoleEnum } from "../enums/role.enums";
-import { IUser } from "../interfaces/IUser";
+import { IUserUpdated } from "../interfaces/IUser";
 
 const { Schema } = mongoose;
 
@@ -29,4 +29,4 @@ const userSchema = new Schema(
   },
 );
 
-export const UserModel = mongoose.model<IUser>("users", userSchema);
+export const UserModel = mongoose.model<IUserUpdated>("users", userSchema);

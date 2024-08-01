@@ -53,6 +53,7 @@ router.patch(
   "/password/change",
   auth.tokenCheck(TokenEnumList.access),
   validate(validUser.changePasswordCheck),
+  auth.oldPasswordCheck(),
   authController.renewPassword,
 );
 

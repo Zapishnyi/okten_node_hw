@@ -18,9 +18,7 @@ class AuthCheck {
         });
         if (user) {
           res.locals._userId = user._id.toString();
-          if (
-            !(await hashService.compare(await req.body.password, user.password))
-          ) {
+          if (!(await hashService.compare(req.body.password, user.password))) {
             throw new ApiError("Invalid credentials", 401);
           }
         }
@@ -68,6 +66,29 @@ class AuthCheck {
       } catch (err) {
         if (err instanceof TokenExpiredError) {
           err = new ApiError(err.message, 401);
+        }
+        next(err);
+      }
+    };
+  }
+  public oldPasswordCheck() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const user = await userServices.findOneById(res.locals._userId);
+
+        if (user) {
+          console.log("Old password:", req.body.oldPassword);
+          console.log("user password:", user.password);
+          if (
+            !(await hashService.compare(req.body.oldPassword, user.password))
+          ) {
+            throw new ApiError("Invalid credentials", 401);
+          }
+          res.locals.user = user;
+        }
+        next();
+      } catch (err) {
+        if (err) {
         }
         next(err);
       }

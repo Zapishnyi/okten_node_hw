@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import { userServices } from "../services/user.service";
 
 class UserController {
@@ -43,7 +44,13 @@ class UserController {
     try {
       res
         .status(200)
-        .json(await userServices.updateOne(res.locals._userId, req.body));
+        .json(
+          await userServices.updateOne(
+            res.locals._userId,
+            req.body,
+            ReturnDocumentTypeEnum.After,
+          ),
+        );
     } catch (err) {
       next(err);
     }
