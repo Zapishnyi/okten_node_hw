@@ -10,12 +10,7 @@ const router = Router();
 
 // Register
 
-router.post(
-  "/sing-up",
-  validate(validUser.singUp),
-  auth.newPasswordCheck(),
-  authController.singUp,
-);
+router.post("/sing-up", validate(validUser.singUp), authController.singUp);
 
 // Login
 
@@ -23,7 +18,6 @@ router.get(
   "/login",
   validate(validUser.login),
   auth.passwordCheckBeforeLogin(),
-
   authController.login,
 );
 

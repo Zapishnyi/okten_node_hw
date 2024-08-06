@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import ICar from "../interfaces/ICar";
+import { ICarUpdated } from "../interfaces/ICar";
 import { UserModel } from "./user.model";
 
 const { Schema } = mongoose;
@@ -20,4 +20,4 @@ const carsSchema = new Schema(
   },
 );
 
-export const CarModel = mongoose.model<ICar>("cars", carsSchema);
+export const CarModel = mongoose.model<ICarUpdated>("cars", carsSchema);

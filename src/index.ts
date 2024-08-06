@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 import { Error } from "mongoose";
@@ -13,6 +14,9 @@ const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Use the CORS middleware
+app.use(cors());
 
 app.use("/users", userRouter);
 app.use("/cars", carRouter);

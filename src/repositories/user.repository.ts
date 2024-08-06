@@ -11,7 +11,7 @@ class UserRepository {
   }
 
   public async createOne(dto: IUserUpdate): Promise<IUserUpdated> {
-    await UserModel.syncIndexes();
+    // await UserModel.syncIndexes();
     return await UserModel.create(dto);
   }
 
@@ -38,8 +38,8 @@ class UserRepository {
     dto: IUserUpdate,
     returnType: ReturnDocumentTypeEnum,
   ): Promise<IUserUpdated | null> {
-    const result: IUserUpdated | null = await UserModel.findOneAndUpdate(
-      { _id: id },
+    const result: IUserUpdated | null = await UserModel.findByIdAndUpdate(
+      id,
       dto,
       { returnDocument: returnType },
     );
@@ -61,9 +61,7 @@ class UserRepository {
   // }
 
   public async deleteOne(id: string): Promise<IUserUpdated | null> {
-    const result: IUserUpdated | null = await UserModel.findOneAndDelete({
-      _id: id,
-    });
+    const result: IUserUpdated | null = await UserModel.findByIdAndDelete(id);
     noFoundCheck(id, result);
     return result;
   }

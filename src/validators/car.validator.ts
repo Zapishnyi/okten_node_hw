@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-import ICar from "../interfaces/ICar";
+import { ICarCreate, ICarUpdate } from "../interfaces/ICar";
 
 export class validCar {
   private static brand = Joi.string().max(255).trim();
@@ -11,14 +11,14 @@ export class validCar {
   private static img = Joi.string().uri().trim();
   private static secondHand = Joi.boolean();
 
-  public static carStrict: Joi.ObjectSchema<ICar> = Joi.object({
+  public static create: Joi.ObjectSchema<ICarCreate> = Joi.object({
     brand: this.brand.required(),
     yearBuild: this.yearBuild.required(),
     price: this.price.required(),
     img: this.img.required(),
     secondHand: this.secondHand.required(),
   });
-  public static carNotStrict: Joi.ObjectSchema<ICar> = Joi.object({
+  public static update: Joi.ObjectSchema<ICarUpdate> = Joi.object({
     brand: this.brand,
     yearBuild: this.yearBuild,
     price: this.price,

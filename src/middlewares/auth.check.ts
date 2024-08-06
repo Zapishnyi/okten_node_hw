@@ -34,15 +34,13 @@ class AuthCheck {
   public newPasswordCheck() {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const oldPasswordsArray = await oldPasswordsRepository.findManyByParams(
-          {
+        const oldPasswordsArray =
+          (await oldPasswordsRepository.findManyByParams({
             _userId: res.locals._userId,
             createdAt: { $gt: dayjs().subtract(90, "days").toDate() },
-          },
-        );
-        console.log("OldPAsswords", oldPasswordsArray);
+          })) || [];
         if (
-          oldPasswordsArray?.filter(
+          [...oldPasswordsArray, { password: res.locals.user.password }].filter(
             async (e) =>
               await hashService.compare(req.body.password, e.password),
           ).length

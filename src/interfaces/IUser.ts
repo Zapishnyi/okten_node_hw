@@ -34,12 +34,6 @@ export interface IUserUpdate
 
 export interface IUserUpdated extends Required<IUser> {}
 
-export interface IUserNoID
-  extends Pick<
-    IUser,
-    "userName" | "password" | "email" | "name" | "age" | "gender" | "phone"
-  > {}
-
 export interface IUserLogin extends Pick<IUser, "userName" | "password"> {}
 export interface IUserEmail extends Pick<IUser, "email"> {}
 

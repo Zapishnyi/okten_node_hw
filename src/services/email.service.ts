@@ -30,10 +30,10 @@ class EmailService {
       hbs({
         viewEngine: {
           extname: ".hbs",
-          partialsDir: path.join(process.cwd(), "src", "templates", "partials"),
-          layoutsDir: path.join(process.cwd(), "src", "templates", "layouts"),
+          partialsDir: path.join(process.cwd(), "templates", "partials"),
+          layoutsDir: path.join(process.cwd(), "templates", "layouts"),
         },
-        viewPath: path.join(process.cwd(), "src", "templates", "views"),
+        viewPath: path.join(process.cwd(), "templates", "views"),
         extName: ".hbs",
       }),
     );

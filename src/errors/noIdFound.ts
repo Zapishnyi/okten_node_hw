@@ -1,4 +1,4 @@
-import ICar from "../interfaces/ICar";
+import { ICar } from "../interfaces/ICar";
 import { IUser } from "../interfaces/IUser";
 import { ApiError } from "./api.error";
 

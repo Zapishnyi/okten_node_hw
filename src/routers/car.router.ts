@@ -12,14 +12,14 @@ const router = Router();
 
 // Get All Car
 
-router.get("/", auth.tokenCheck(TokenEnumList.access), carController.findAll);
+router.get("/", carController.findAll);
 
 //  Add one Car
 
 router.post(
   "/",
   auth.tokenCheck(TokenEnumList.access),
-  validate(validCar.carStrict),
+  validate(validCar.create),
   carController.addOne,
 );
 
@@ -37,7 +37,7 @@ router.patch(
   "/:id",
   auth.tokenCheck(TokenEnumList.access),
   idCheck(),
-  validate(validCar.carNotStrict),
+  validate(validCar.update),
   carCheck.role(),
   carController.updateOne,
 );
@@ -48,7 +48,7 @@ router.put(
   "/:id",
   auth.tokenCheck(TokenEnumList.access),
   idCheck(),
-  validate(validCar.carNotStrict),
+  validate(validCar.update),
   carCheck.role(),
   carController.replaceOne,
 );
