@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, { Express, NextFunction, Request, Response } from "express";
+import fileUpload from "express-fileupload";
 import * as mongoose from "mongoose";
 import { Error } from "mongoose";
 
@@ -18,10 +19,14 @@ app.use(express.urlencoded({ extended: true }));
 // Use the CORS middleware
 app.use(cors());
 
+// AWS file management
+app.use(fileUpload());
+
 app.use("/users", userRouter);
 app.use("/cars", carRouter);
 app.use("/auth", authRouter);
 
+//All errors final end point
 app.use(
   "*",
   (err: IAPIError, req: Request, res: Response, next: NextFunction) => {
@@ -44,6 +49,7 @@ process.on("uncaughtException", (err: Error) => {
   process.exit(1);
 });
 
+// Server start
 app.listen(config.APP_PORT, config.APP_HOST, async () => {
   await mongoose.connect(config.MONGO_URI);
   console.log(`server started at port ${config.APP_PORT} `);

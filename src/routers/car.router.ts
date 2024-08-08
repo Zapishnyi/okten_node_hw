@@ -5,7 +5,7 @@ import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
 import { carCheck } from "../middlewares/car.check";
 import { idCheck } from "../middlewares/id.check";
-import { validate } from "../middlewares/validate";
+import { validateBody } from "../middlewares/validate";
 import { validCar } from "../validators/car.validator";
 
 const router = Router();
@@ -19,7 +19,7 @@ router.get("/", carController.findAll);
 router.post(
   "/",
   auth.tokenCheck(TokenEnumList.access),
-  validate(validCar.create),
+  validateBody(validCar.create),
   carController.addOne,
 );
 
@@ -37,7 +37,7 @@ router.patch(
   "/:id",
   auth.tokenCheck(TokenEnumList.access),
   idCheck(),
-  validate(validCar.update),
+  validateBody(validCar.update),
   carCheck.role(),
   carController.updateOne,
 );
@@ -48,7 +48,7 @@ router.put(
   "/:id",
   auth.tokenCheck(TokenEnumList.access),
   idCheck(),
-  validate(validCar.update),
+  validateBody(validCar.update),
   carCheck.role(),
   carController.replaceOne,
 );

@@ -3,20 +3,20 @@ import { Router } from "express";
 import { authController } from "../controllers/auth.controller";
 import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
-import { validate } from "../middlewares/validate";
+import { validateBody } from "../middlewares/validate";
 import { validUser } from "../validators/user.validator";
 
 const router = Router();
 
 // Register
 
-router.post("/sing-up", validate(validUser.singUp), authController.singUp);
+router.post("/sing-up", validateBody(validUser.singUp), authController.singUp);
 
 // Login
 
 router.get(
   "/login",
-  validate(validUser.login),
+  validateBody(validUser.login),
   auth.passwordCheckBeforeLogin(),
   authController.login,
 );
@@ -33,7 +33,7 @@ router.post(
 
 router.post(
   "/password/forgot",
-  validate(validUser.emailCheck),
+  validateBody(validUser.emailCheck),
   auth.emailCheck(),
   authController.forgotPassword,
 );
@@ -43,7 +43,7 @@ router.post(
 router.patch(
   "/password/forgot",
   auth.tokenCheck(TokenEnumList.action),
-  validate(validUser.passwordCheck),
+  validateBody(validUser.passwordCheck),
   auth.newPasswordCheck(),
   authController.renewPassword,
 );
@@ -53,7 +53,7 @@ router.patch(
 router.patch(
   "/password/change",
   auth.tokenCheck(TokenEnumList.access),
-  validate(validUser.changePasswordCheck),
+  validateBody(validUser.changePasswordCheck),
   auth.oldPasswordCheck(),
   auth.newPasswordCheck(),
   authController.renewPassword,

@@ -31,6 +31,7 @@ export class validUser {
   private static phone = Joi.string().pattern(regexp.phone).messages({
     "string.pattern.base": "Must be a valid phone number",
   });
+
   private static gender = Joi.string().valid(...Object.values(GenderEnum));
   private static role = Joi.string().valid(...Object.values(RoleEnum));
 

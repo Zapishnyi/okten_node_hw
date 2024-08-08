@@ -1,12 +1,15 @@
 import { Router } from "express";
 
 import { userController } from "../controllers/user.controller";
+import { FileTypeEnum } from "../enums/file-type.enum";
 import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
+import { fileCheck } from "../middlewares/file.check";
 import { idCheck } from "../middlewares/id.check";
 import { userCheck } from "../middlewares/user.check";
-import { validate } from "../middlewares/validate";
+import { validateBody, validateQuery } from "../middlewares/validate";
 import { validUser } from "../validators/user.validator";
+import { validUserDelete } from "../validators/userDelete.validator";
 
 const router = Router();
 
@@ -23,8 +26,14 @@ router.get(
 
 router.get("/me", auth.tokenCheck(TokenEnumList.access), userController.findMe);
 
-// Get one user by ID
+// router.patch(
+//   "/me/avatar",
+//   auth.tokenCheck(TokenEnumList.access),
+//   validate(validUser.userUpdate),
+//   userController.uploadAvatar,
+// );
 
+// Get one user by ID
 router.get(
   "/:id",
   auth.tokenCheck(TokenEnumList.access),
@@ -40,7 +49,8 @@ router.patch(
   auth.tokenCheck(TokenEnumList.access),
   idCheck(),
   userCheck.role(),
-  validate(validUser.userUpdate),
+  validateBody(validUser.userUpdate),
+  fileCheck(FileTypeEnum.avatar),
   userController.updateOne,
 );
 
@@ -61,6 +71,15 @@ router.delete(
   idCheck(),
   userCheck.role(),
   userController.deleteOne,
+);
+
+router.delete(
+  "/keys/:id",
+  auth.tokenCheck(TokenEnumList.access),
+  idCheck(),
+  userCheck.role(),
+  validateQuery(validUserDelete.keysDelete),
+  userController.deleteKeysByParams,
 );
 
 export const userRouter = router;

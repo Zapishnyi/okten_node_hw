@@ -24,7 +24,7 @@ class CarController {
       res.status(201).json(
         await carServices.createOne({
           ...req.body,
-          ownerId: res.locals._userId,
+          _ownerId: res.locals._userId,
         }),
       );
     } catch (err) {

@@ -5,3 +5,4 @@
 /dist/
 /.env
 node_modules
+/okten-node-test-project_accessKeys.csv

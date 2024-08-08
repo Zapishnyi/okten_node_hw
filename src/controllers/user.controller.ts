@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { UploadedFile } from "express-fileupload";
 
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
+import { toPresent } from "../presenter/user.presenter";
 import { userServices } from "../services/user.service";
 
 class UserController {
@@ -16,7 +18,9 @@ class UserController {
     try {
       res
         .status(200)
-        .json(await userServices.findOneByParam({ _id: req.params.id }));
+        .json(
+          toPresent(await userServices.findOneByParam({ _id: req.params.id })),
+        );
     } catch (err) {
       next(err);
     }
@@ -26,7 +30,11 @@ class UserController {
     try {
       res
         .status(200)
-        .json(await userServices.findOneByParam({ _id: res.locals._userId }));
+        .json(
+          toPresent(
+            await userServices.findOneByParam({ _id: res.locals._userId }),
+          ),
+        );
     } catch (err) {
       next(err);
     }
@@ -45,31 +53,48 @@ class UserController {
       res
         .status(200)
         .json(
-          await userServices.updateOne(
-            res.locals._userId,
-            req.body,
-            ReturnDocumentTypeEnum.After,
+          toPresent(
+            await userServices.updateOne(
+              res.locals._userId,
+              req.body,
+              ReturnDocumentTypeEnum.After,
+              req.files?.avatar as UploadedFile,
+              res.locals.user?.avatar,
+            ),
           ),
         );
     } catch (err) {
       next(err);
     }
   }
-  //
-  // public async replaceOne(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     res
-  //       .status(200)
-  //       .json(await userServices.replaceOne(req.params.id, req.body));
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
-  //
+
   public async deleteOne(req: Request, res: Response, next: NextFunction) {
     try {
       await userServices.deleteOne(req.params.id);
       res.status(200).json(`User with ID ${req.params.id} successful deleted`);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async deleteKeysByParams(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      res
+        .status(200)
+        .json(
+          toPresent(
+            await userServices.deleteKeys(
+              res.locals._userId,
+              req.query,
+              ReturnDocumentTypeEnum.After,
+              res.locals.user?.avatar,
+            ),
+          ),
+        );
     } catch (err) {
       next(err);
     }
