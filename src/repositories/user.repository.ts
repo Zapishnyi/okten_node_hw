@@ -1,13 +1,64 @@
 import { FilterQuery } from "mongoose";
 
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
+import { UserOrderByEnum } from "../enums/user-order-by.enum";
 import { noFoundCheck } from "../errors/noIdFound";
+import { IPaginated } from "../interfaces/IPaginated";
 import { IUserUpdate, IUserUpdated } from "../interfaces/IUser";
 import { UserModel } from "../models/user.model";
 
 class UserRepository {
-  public async findAll(): Promise<IUserUpdated[]> {
-    return await UserModel.find();
+  public async findAll({
+    limit,
+    page,
+    search,
+  }: IPaginated<UserOrderByEnum>): Promise<[IUserUpdated[], number]> {
+    const filterObject: FilterQuery<IUserUpdated> = {
+      /* isVerified:true   */
+    };
+    if (search) {
+      filterObject.$or = [
+        {
+          userName: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          email: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          role: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          name: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+
+        {
+          age: search ? (Number(search) ? +search : 0) : 0,
+        },
+        {
+          phone: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
+    }
+    const users: IUserUpdated[] = await UserModel.find(filterObject)
+      .limit(limit)
+      .skip((page - 1) * limit);
+    const total = await UserModel.countDocuments(filterObject);
+    return [users, total];
   }
 
   public async createOne(dto: IUserUpdate): Promise<IUserUpdated> {

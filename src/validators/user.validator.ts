@@ -28,7 +28,7 @@ export class validUser {
   private static email = Joi.string().pattern(regexp.email).trim().messages({
     "string.pattern.base": "Must be a valid email address",
   });
-  private static phone = Joi.string().pattern(regexp.phone).messages({
+  private static phone = Joi.string().pattern(regexp.phone).trim().messages({
     "string.pattern.base": "Must be a valid phone number",
   });
 

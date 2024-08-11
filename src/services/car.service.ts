@@ -1,10 +1,20 @@
+import { CarOrderByEnum } from "../enums/car-order-by.enum";
 import { ICarCreate, ICarUpdate, ICarUpdated } from "../interfaces/ICar";
+import { IPaginated, IPaginationResult } from "../interfaces/IPaginated";
 import { CarModel } from "../models/car.model";
+import { toPresentPaginated } from "../presenters/presenter";
 import { carRepository } from "../repositories/car.repository";
 
 class CarServices {
-  public async findAll(): Promise<ICarUpdated[]> {
-    return await carRepository.findAll();
+  public async findAll(
+    query: IPaginated<CarOrderByEnum>,
+  ): Promise<IPaginationResult<ICarUpdated, CarOrderByEnum>> {
+    const [cars, total] = await carRepository.findAll(query);
+    return toPresentPaginated<ICarUpdated, CarOrderByEnum>({
+      ...query,
+      data: cars,
+      total,
+    });
   }
 
   public async findOne(carId: string): Promise<ICarUpdated | null> {

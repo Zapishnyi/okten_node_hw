@@ -7,7 +7,7 @@ class Validate {
   public validateBody(validationSchema: ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        await validationSchema.validateAsync(req.body);
+        req.body = await validationSchema.validateAsync(req.body);
         next();
       } catch (err) {
         const error = err as ValidationError;
@@ -18,7 +18,7 @@ class Validate {
   public validateQuery(validationSchema: ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        await validationSchema.validateAsync(req.query);
+        req.query = await validationSchema.validateAsync(req.query);
         next();
       } catch (err) {
         const error = err as ValidationError;

@@ -2,13 +2,16 @@ import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
-import { toPresent } from "../presenter/user.presenter";
+import { UserOrderByEnum } from "../enums/user-order-by.enum";
+import { IPaginated } from "../interfaces/IPaginated";
+import { toPresentUser } from "../presenters/presenter";
 import { userServices } from "../services/user.service";
 
 class UserController {
   public async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await userServices.findAll());
+      const query = req.query as unknown as IPaginated<UserOrderByEnum>;
+      res.status(200).json(await userServices.findAll(query));
     } catch (err) {
       next(err);
     }
@@ -19,7 +22,9 @@ class UserController {
       res
         .status(200)
         .json(
-          toPresent(await userServices.findOneByParam({ _id: req.params.id })),
+          toPresentUser(
+            await userServices.findOneByParam({ _id: req.params.id }),
+          ),
         );
     } catch (err) {
       next(err);
@@ -31,7 +36,7 @@ class UserController {
       res
         .status(200)
         .json(
-          toPresent(
+          toPresentUser(
             await userServices.findOneByParam({ _id: res.locals._userId }),
           ),
         );
@@ -53,7 +58,7 @@ class UserController {
       res
         .status(200)
         .json(
-          toPresent(
+          toPresentUser(
             await userServices.updateOne(
               res.locals._userId,
               req.body,
@@ -86,7 +91,7 @@ class UserController {
       res
         .status(200)
         .json(
-          toPresent(
+          toPresentUser(
             await userServices.deleteKeys(
               res.locals._userId,
               req.query,

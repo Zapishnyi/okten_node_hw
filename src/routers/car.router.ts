@@ -5,14 +5,19 @@ import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
 import { carCheck } from "../middlewares/car.check";
 import { idCheck } from "../middlewares/id.check";
-import { validateBody } from "../middlewares/validate";
+import { validateBody, validateQuery } from "../middlewares/validate";
 import { validCar } from "../validators/car.validator";
+import { validPagination } from "../validators/pagination.validator";
 
 const router = Router();
 
 // Get All Car
 
-router.get("/", carController.findAll);
+router.get(
+  "/",
+  validateQuery(validPagination.searchQueryCar),
+  carController.findAll,
+);
 
 //  Add one Car
 

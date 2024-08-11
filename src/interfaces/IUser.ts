@@ -35,6 +35,7 @@ export interface IUserUpdate
   > {}
 
 export interface IUserUpdated extends Required<IUser> {}
+export interface IUserPresented extends Partial<Omit<IUser, "password">> {}
 
 export interface IUserLogin extends Pick<IUser, "userName" | "password"> {}
 export interface IUserEmail extends Pick<IUser, "email"> {}

@@ -3,20 +3,31 @@ import { FilterQuery } from "mongoose";
 
 import { ImageDirectoryNameEnum } from "../enums/image-directory-name.enum";
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
+import { UserOrderByEnum } from "../enums/user-order-by.enum";
+import { IPaginated, IPaginationResult } from "../interfaces/IPaginated";
 import {
   IUser,
   IUserDeleteKeys,
+  IUserPresented,
   IUserSingUp,
   IUserUpdate,
   IUserUpdated,
 } from "../interfaces/IUser";
+import { toPresentPaginated, toPresentUser } from "../presenters/presenter";
 import { authTokenRepository } from "../repositories/auth_token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { s3Service } from "./s3.service";
 
 class UserServices {
-  public async findAll(): Promise<IUser[]> {
-    return await userRepository.findAll();
+  public async findAll(
+    query: IPaginated<UserOrderByEnum>,
+  ): Promise<IPaginationResult<IUserPresented, UserOrderByEnum>> {
+    const [users, total] = await userRepository.findAll(query);
+    return toPresentPaginated<IUserPresented, UserOrderByEnum>({
+      ...query,
+      total,
+      data: users.map((e) => toPresentUser(e)),
+    });
   }
 
   public async findOneById(userId: string): Promise<IUser | null> {

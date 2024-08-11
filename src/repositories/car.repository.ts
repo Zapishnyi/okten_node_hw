@@ -1,10 +1,48 @@
+import { FilterQuery, isObjectIdOrHexString } from "mongoose";
+
+import { CarOrderByEnum } from "../enums/car-order-by.enum";
 import { noFoundCheck } from "../errors/noIdFound";
 import { ICarCreate, ICarUpdate, ICarUpdated } from "../interfaces/ICar";
+import { IPaginated } from "../interfaces/IPaginated";
 import { CarModel } from "../models/car.model";
 
 class CarRepository {
-  public async findAll(): Promise<ICarUpdated[]> {
-    return await CarModel.find();
+  public async findAll({
+    limit,
+    page,
+    search,
+  }: IPaginated<CarOrderByEnum>): Promise<[ICarUpdated[], number]> {
+    const filterObject: FilterQuery<ICarUpdated> = {};
+    if (search) {
+      filterObject.$or = [
+        {
+          brand: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          yearBuild: search ? (Number(search) ? +search : 0) : 0,
+        },
+        {
+          price: search ? (Number(search) ? +search : 0) : 0,
+        },
+        {
+          _ownerId: isObjectIdOrHexString(search) ? search : null,
+        },
+        // {
+        //   secondHand: {
+        //     $regex: search,
+        //     $options: "i",
+        //   },
+        // },
+      ];
+    }
+    const cars: ICarUpdated[] = await CarModel.find(filterObject)
+      .limit(limit)
+      .skip((page - 1) * limit);
+    const total = await CarModel.countDocuments(filterObject);
+    return [cars, total];
   }
 
   public async createOne(dto: ICarCreate): Promise<ICarUpdated> {

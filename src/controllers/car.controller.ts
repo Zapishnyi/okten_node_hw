@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 
+import { CarOrderByEnum } from "../enums/car-order-by.enum";
+import { IPaginated } from "../interfaces/IPaginated";
 import { carServices } from "../services/car.service";
 
 class CarController {
   public async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json(await carServices.findAll());
+      const query = req.query as unknown as IPaginated<CarOrderByEnum>;
+      res.status(200).json(await carServices.findAll(query));
     } catch (err) {
       next(err);
     }

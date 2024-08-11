@@ -8,8 +8,9 @@ import { fileCheck } from "../middlewares/file.check";
 import { idCheck } from "../middlewares/id.check";
 import { userCheck } from "../middlewares/user.check";
 import { validateBody, validateQuery } from "../middlewares/validate";
+import { validPagination } from "../validators/pagination.validator";
 import { validUser } from "../validators/user.validator";
-import { validUserDelete } from "../validators/userDelete.validator";
+import { validUserDelete } from "../validators/userDeleteByParams.validator";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.get(
   "/",
   auth.tokenCheck(TokenEnumList.access),
   userCheck.role(),
+  validateQuery(validPagination.searchQueryUser),
   userController.findAll,
 );
 
