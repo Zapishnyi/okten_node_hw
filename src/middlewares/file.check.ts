@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
 import { allow } from "../constants/fileAllowConfig";
-import { FileTypeEnum } from "../enums/file-type.enum";
+import { FileTypeEnum } from "../enums/fileType.enum";
 import { ApiError } from "../errors/api.error";
 
 class FileCheck {

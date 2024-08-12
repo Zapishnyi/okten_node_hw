@@ -2,7 +2,7 @@ import { Router } from "express";
 import { rateLimit } from "express-rate-limit";
 
 import { userController } from "../controllers/user.controller";
-import { FileTypeEnum } from "../enums/file-type.enum";
+import { FileTypeEnum } from "../enums/fileType.enum";
 import { TokenEnumList } from "../enums/tokenTypeList.enum";
 import { auth } from "../middlewares/auth.check";
 import { fileCheck } from "../middlewares/file.check";

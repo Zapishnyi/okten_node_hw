@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CarOrderByEnum } from "../enums/car-order-by.enum";
+import { CarOrderByEnum } from "../enums/carOrderBy.enum";
 import { IPaginated } from "../interfaces/IPaginated";
 import { carServices } from "../services/car.service";
 

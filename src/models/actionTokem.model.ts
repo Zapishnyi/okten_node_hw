@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { ActionTypeEnum } from "../enums/action-type.enum";
+import { ActionTypeEnum } from "../enums/actionType.enum";
 import { ITokenAction } from "../interfaces/ITokenAction";
 import { UserModel } from "./user.model";
 

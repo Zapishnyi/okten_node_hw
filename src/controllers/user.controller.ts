@@ -3,7 +3,7 @@ import { UploadedFile } from "express-fileupload";
 
 import { MeasureExecutionTime } from "../decorators/measuring_time.decorator";
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
-import { UserOrderByEnum } from "../enums/user-order-by.enum";
+import { UserOrderByEnum } from "../enums/userOrderBy.enum";
 import { IPaginated } from "../interfaces/IPaginated";
 import { toPresentUser } from "../presenters/presenter";
 import { userServices } from "../services/user.service";

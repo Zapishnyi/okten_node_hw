@@ -1,4 +1,4 @@
-import { ActionTypeEnum } from "../enums/action-type.enum";
+import { ActionTypeEnum } from "../enums/actionType.enum";
 import { TokenEnum } from "../enums/tokenType.enum";
 import { ITokenAction } from "../interfaces/ITokenAction";
 import { ActionTokenModel } from "../models/actionTokem.model";

@@ -2,7 +2,7 @@ import { CronJob } from "cron";
 import dayjs from "dayjs";
 
 import { config } from "../configs/config";
-import { EmailTypeEnum } from "../enums/email-type.enum";
+import { EmailTypeEnum } from "../enums/emailType.enum";
 import { authTokenRepository } from "../repositories/auth_token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "../services/email.service";

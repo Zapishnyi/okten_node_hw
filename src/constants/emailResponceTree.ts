@@ -1,4 +1,4 @@
-import { EmailTypeEnum } from "../enums/email-type.enum";
+import { EmailTypeEnum } from "../enums/emailType.enum";
 
 export const emailResponseTree = {
   [EmailTypeEnum.WELCOME]: {

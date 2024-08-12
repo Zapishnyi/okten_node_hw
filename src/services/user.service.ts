@@ -1,9 +1,9 @@
 import { UploadedFile } from "express-fileupload";
 import { FilterQuery } from "mongoose";
 
-import { ImageDirectoryNameEnum } from "../enums/image-directory-name.enum";
+import { ImageDirectoryNameEnum } from "../enums/imageDirectoryName.enum";
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
-import { UserOrderByEnum } from "../enums/user-order-by.enum";
+import { UserOrderByEnum } from "../enums/userOrderBy.enum";
 import { IPaginated, IPaginationResult } from "../interfaces/IPaginated";
 import {
   IUser,

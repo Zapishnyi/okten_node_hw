@@ -1,6 +1,6 @@
 import { FilterQuery, isObjectIdOrHexString, SortOrder } from "mongoose";
 
-import { CarOrderByEnum } from "../enums/car-order-by.enum";
+import { CarOrderByEnum } from "../enums/carOrderBy.enum";
 import { noFoundCheck } from "../errors/noIdFound";
 import { ICarCreate, ICarUpdate, ICarUpdated } from "../interfaces/ICar";
 import { IPaginated } from "../interfaces/IPaginated";

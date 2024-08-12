@@ -1,4 +1,4 @@
-import { CarOrderByEnum } from "../enums/car-order-by.enum";
+import { CarOrderByEnum } from "../enums/carOrderBy.enum";
 import { ICarCreate, ICarUpdate, ICarUpdated } from "../interfaces/ICar";
 import { IPaginated, IPaginationResult } from "../interfaces/IPaginated";
 import { CarModel } from "../models/car.model";

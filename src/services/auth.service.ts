@@ -1,6 +1,6 @@
 import { config } from "../configs/config";
-import { ActionTypeEnum } from "../enums/action-type.enum";
-import { EmailTypeEnum } from "../enums/email-type.enum";
+import { ActionTypeEnum } from "../enums/actionType.enum";
+import { EmailTypeEnum } from "../enums/emailType.enum";
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import { ITokenAuth } from "../interfaces/ITokenAuth";
 import {

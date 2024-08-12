@@ -5,7 +5,7 @@ import hbs from "nodemailer-express-handlebars";
 
 import { config } from "../configs/config";
 import { emailResponseTree } from "../constants/emailResponceTree";
-import { EmailTypeEnum } from "../enums/email-type.enum";
+import { EmailTypeEnum } from "../enums/emailType.enum";
 import { EmailToPayloadType } from "../types/email_type_to_payload";
 
 class EmailService {

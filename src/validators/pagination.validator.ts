@@ -1,8 +1,8 @@
 import Joi from "joi";
 
-import { CarOrderByEnum } from "../enums/car-order-by.enum";
+import { CarOrderByEnum } from "../enums/carOrderBy.enum";
 import { OrderEnum } from "../enums/order.enum";
-import { UserOrderByEnum } from "../enums/user-order-by.enum";
+import { UserOrderByEnum } from "../enums/userOrderBy.enum";
 import { IPaginated } from "../interfaces/IPaginated";
 
 export class validPagination {

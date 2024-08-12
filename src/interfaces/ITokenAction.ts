@@ -1,4 +1,4 @@
-import { ActionTypeEnum } from "../enums/action-type.enum";
+import { ActionTypeEnum } from "../enums/actionType.enum";
 
 export interface ITokenAction {
   _id?: string;

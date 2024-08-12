@@ -9,7 +9,7 @@ import {
 import { UploadedFile } from "express-fileupload";
 
 import { config } from "../configs/config";
-import { ImageDirectoryNameEnum } from "../enums/image-directory-name.enum";
+import { ImageDirectoryNameEnum } from "../enums/imageDirectoryName.enum";
 
 class S3Service {
   constructor(

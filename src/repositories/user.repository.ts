@@ -1,7 +1,7 @@
 import { FilterQuery, SortOrder } from "mongoose";
 
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
-import { UserOrderByEnum } from "../enums/user-order-by.enum";
+import { UserOrderByEnum } from "../enums/userOrderBy.enum";
 import { noFoundCheck } from "../errors/noIdFound";
 import { IPaginated } from "../interfaces/IPaginated";
 import { IUserUpdate, IUserUpdated } from "../interfaces/IUser";
