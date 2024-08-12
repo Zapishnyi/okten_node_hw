@@ -3,7 +3,7 @@ import Joi from "joi";
 import { CarOrderByEnum } from "../enums/car-order-by.enum";
 import { OrderEnum } from "../enums/order.enum";
 import { UserOrderByEnum } from "../enums/user-order-by.enum";
-import { IUserDeleteKeys } from "../interfaces/IUser";
+import { IPaginated } from "../interfaces/IPaginated";
 
 export class validPagination {
   private static limit = Joi.number().min(1).max(100).default(10);
@@ -14,20 +14,24 @@ export class validPagination {
     .default(OrderEnum.ASC);
   private static orderBy = Joi.string().default(UserOrderByEnum.USER_NAME);
 
-  public static searchQueryUser: Joi.ObjectSchema<IUserDeleteKeys> = Joi.object(
-    {
+  public static searchQueryUser: Joi.ObjectSchema<IPaginated<UserOrderByEnum>> =
+    Joi.object({
       limit: this.limit,
       page: this.page,
       search: this.search,
       order: this.order,
-      orderBy: this.orderBy.default(UserOrderByEnum.USER_NAME),
-    },
-  );
-  public static searchQueryCar: Joi.ObjectSchema<IUserDeleteKeys> = Joi.object({
-    limit: this.limit,
-    page: this.page,
-    search: this.search,
-    order: this.order,
-    orderBy: this.orderBy.default(CarOrderByEnum.BRAND),
-  });
+      orderBy: this.orderBy
+        .valid(...Object.values(UserOrderByEnum))
+        .default(UserOrderByEnum.USER_NAME),
+    });
+  public static searchQueryCar: Joi.ObjectSchema<IPaginated<CarOrderByEnum>> =
+    Joi.object({
+      limit: this.limit,
+      page: this.page,
+      search: this.search,
+      order: this.order,
+      orderBy: this.orderBy
+        .valid(...Object.values(CarOrderByEnum))
+        .default(CarOrderByEnum.BRAND),
+    });
 }

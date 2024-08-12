@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
+import { MeasureExecutionTime } from "../decorators/measuring_time.decorator";
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import { UserOrderByEnum } from "../enums/user-order-by.enum";
 import { IPaginated } from "../interfaces/IPaginated";
@@ -8,6 +9,7 @@ import { toPresentUser } from "../presenters/presenter";
 import { userServices } from "../services/user.service";
 
 class UserController {
+  @MeasureExecutionTime(";)")
   public async findAll(req: Request, res: Response, next: NextFunction) {
     try {
       const query = req.query as unknown as IPaginated<UserOrderByEnum>;
@@ -45,13 +47,13 @@ class UserController {
     }
   }
 
-  public async addOne(req: Request, res: Response, next: NextFunction) {
-    try {
-      res.status(201).json(await userServices.createOne(req.body));
-    } catch (err) {
-      next(err);
-    }
-  }
+  // public async addOne(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     res.status(201).json(await userServices.createOne(req.body));
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
 
   public async updateOne(req: Request, res: Response, next: NextFunction) {
     try {

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { rateLimit } from "express-rate-limit";
 
 import { userController } from "../controllers/user.controller";
 import { FileTypeEnum } from "../enums/file-type.enum";
@@ -18,6 +19,11 @@ const router = Router();
 
 router.get(
   "/",
+  rateLimit({
+    //   Limit access to endpoint by certain rules - "express-rate-limit"
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  }),
   auth.tokenCheck(TokenEnumList.access),
   userCheck.role(),
   validateQuery(validPagination.searchQueryUser),

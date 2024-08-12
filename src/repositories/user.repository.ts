@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, SortOrder } from "mongoose";
 
 import { ReturnDocumentTypeEnum } from "../enums/returnDocumentType.enum";
 import { UserOrderByEnum } from "../enums/user-order-by.enum";
@@ -9,8 +9,10 @@ import { UserModel } from "../models/user.model";
 
 class UserRepository {
   public async findAll({
-    limit,
     page,
+    limit,
+    order,
+    orderBy,
     search,
   }: IPaginated<UserOrderByEnum>): Promise<[IUserUpdated[], number]> {
     const filterObject: FilterQuery<IUserUpdated> = {
@@ -54,9 +56,12 @@ class UserRepository {
         },
       ];
     }
+    const sortObject: { [key: string]: SortOrder } = {};
+    sortObject[orderBy] = order;
     const users: IUserUpdated[] = await UserModel.find(filterObject)
       .limit(limit)
-      .skip((page - 1) * limit);
+      .skip((page - 1) * limit)
+      .sort(sortObject);
     const total = await UserModel.countDocuments(filterObject);
     return [users, total];
   }
